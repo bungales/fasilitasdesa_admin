@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\WargaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FasilitasController;
@@ -19,11 +21,16 @@ Route::post('/auth/login', [AuthController::class, 'login']);
 Route::get('/auth/logout', [AuthController::class, 'logout']);
 
 
+Route::resource('login', LoginController::class)->only(['index','store','destroy']);
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('/dashboard', function () {
+    return view('admin.dashboard');
+})->name('dashboard');
+
 Route::resource('warga', WargaController::class);
 Route::resource('fasilitasumum', FasilitasUmumController::class);
 
+Route::resource('user', UserController::class);
 
 
 
