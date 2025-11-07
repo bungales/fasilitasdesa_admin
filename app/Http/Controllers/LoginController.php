@@ -29,7 +29,7 @@ class LoginController extends Controller
 
             Auth::login($user);
 
-            return redirect()->route('dashboard')->with('success', 'Login Berhasil');
+            return redirect()->route('dashboard.index')->with('success', 'Login Berhasil');
         }
 
         return back()->with('error', 'Email atau Password salah!');
