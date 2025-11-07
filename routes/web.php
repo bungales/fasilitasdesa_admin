@@ -23,9 +23,8 @@ Route::get('/auth/logout', [AuthController::class, 'logout']);
 
 Route::resource('login', LoginController::class)->only(['index','store','destroy']);
 
-Route::get('/dashboard', function () {
-    return view('admin.dashboard');
-})->name('dashboard');
+
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 Route::resource('warga', WargaController::class);
 Route::resource('fasilitasumum', FasilitasUmumController::class);

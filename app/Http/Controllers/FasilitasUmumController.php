@@ -11,14 +11,14 @@ class FasilitasUmumController extends Controller
     {
 
     $fasilitas = FasilitasUmum::all();
-    return view('admin.fasilitasumum.index', compact('fasilitas'));
+    return view('pages.fasilitasumum.index', compact('fasilitas'));
 
 
     }
 
     public function create()
     {
-        return view('admin.fasilitasumum.create');
+        return view('pages.fasilitasumum.create');
     }
 
     public function store(Request $request)
@@ -40,7 +40,7 @@ class FasilitasUmumController extends Controller
     public function edit(FasilitasUmum $fasilitasumum)
     {
 
-        return view('admin.fasilitasumum.edit', compact('fasilitasumum'));
+        return view('pages.fasilitasumum.edit', compact('fasilitasumum'));
     }
 
     public function update(Request $request, FasilitasUmum $fasilitasumum)

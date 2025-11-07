@@ -3,18 +3,18 @@
 
 <head>
     <!-- css -->
-    @include('layouts.admin.css')
+    @include('layouts.css')
     <!-- css -->
 </head>
 
 <body>
     <!-- Header -->
-    @include('layouts.admin.header')
+    @include('layouts.header')
     <!-- Header -->
 
     <!-- sidebar -->
     <!-- partial:partials/_sidebar.html -->
-    @include('layouts.admin.sidebar')
+    @include('layouts.sidebar')
     <!-- sidebar -->
 
     <!-- Main Content -->
@@ -23,7 +23,7 @@
 
     <!-- footer -->
     <!-- partial:partials/_footer.html -->
-    @include('layouts.admin.footer')
+    @include('layouts.footer')
     <!-- footer -->
     <!-- partial -->
     </div>
@@ -34,7 +34,7 @@
     <!-- container-scroller -->
 
     <!-- js -->
-    @include('layouts.admin.js')
+    @include('layouts.js')
     <!-- js -->
 
 </body>

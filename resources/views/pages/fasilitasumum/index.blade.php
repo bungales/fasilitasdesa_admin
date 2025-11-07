@@ -1,17 +1,20 @@
-@extends('layouts.admin.app')
+@extends('layouts.app')
 
 @section('content')
-            {{-- start main content --}}
+            <!-- partial -->
             <div class="main-panel">
+                {{-- form --}}
                 <div class="content-wrapper">
                     <div class="page-header">
-                        <h3 class="page-title">Daftar Warga</h3>
+                        <h3 class="page-title">Daftar Fasilitas Umum</h3>
                     </div>
 
                     <div class="card">
                         <div class="card-body">
-                            <a href="{{ route('warga.create') }}" class="btn btn-primary mb-3">+ Tambah Warga</a>
+                            <a href="{{ route('fasilitasumum.create') }}" class="btn btn-primary mb-3">+ Tambah
+                                Fasilitas Umum</a>
 
+                            {{-- ✅ Flash message success --}}
                             @if (session('success'))
                                 <div class="alert alert-success">{{ session('success') }}</div>
                             @endif
@@ -21,30 +24,32 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
-                                            <th>Nama</th>
+                                            <th>Nama Fasilitas</th>
+                                            <th>Jenis</th>
                                             <th>Alamat</th>
                                             <th>RT</th>
                                             <th>RW</th>
-                                            <th>Jenis Kelamin</th>
-                                            <th>No HP</th>
+                                            <th>Kapasitas</th>
+                                            <th>Deskripsi</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @forelse ($warga as $item)
+                                        @forelse ($fasilitas as $item)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $item->nama }}</td>
+                                                <td>{{ $item->jenis }}</td>
                                                 <td>{{ $item->alamat }}</td>
                                                 <td>{{ $item->rt }}</td>
                                                 <td>{{ $item->rw }}</td>
-                                                <td>{{ $item->jenis_kelamin }}</td>
-                                                <td>{{ $item->no_hp }}</td>
+                                                <td>{{ $item->kapasitas }}</td>
+                                                <td>{{ $item->deskripsi }}</td>
                                                 <td>
-                                                    <a href="{{ route('warga.edit', $item->warga_id) }}"
+                                                    <a href="{{ route('fasilitasumum.edit', $item) }}"
                                                         class="btn btn-warning btn-sm">Edit</a>
 
-                                                    <form action="{{ route('warga.destroy', $item->warga_id) }}"
+                                                    <form action="{{ route('fasilitasumum.destroy', $item) }}"
                                                         method="POST" class="d-inline"
                                                         onsubmit="return confirm('Yakin ingin menghapus data ini?')">
                                                         @csrf
@@ -52,10 +57,12 @@
                                                         <button class="btn btn-danger btn-sm">Hapus</button>
                                                     </form>
                                                 </td>
+
                                             </tr>
                                         @empty
                                             <tr>
-                                                <td colspan="7" class="text-center">Belum ada data warga</td>
+                                                <td colspan="9" class="text-center">Belum ada data fasilitas umum
+                                                </td>
                                             </tr>
                                         @endforelse
                                     </tbody>
@@ -64,5 +71,5 @@
                         </div>
                     </div>
                 </div>
-                {{-- and main content  --}}
+                <!-- content-wrapper ends -->
 @endsection

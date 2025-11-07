@@ -12,7 +12,7 @@ class LoginController extends Controller
     // Tampil halaman login
     public function index()
     {
-        return view('admin.login');
+        return view('pages.login');
     }
 
     // Proses login (store karena resource)
