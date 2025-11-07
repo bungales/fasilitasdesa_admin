@@ -91,9 +91,9 @@
         <div class="logo-app">
             <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png">
             <h4 class="text-primary font-weight-bold">
-                <i class="fa-solid fa-building-columns"></i> Login Admin
+                <i class="fa-solid fa-building-columns"></i> LOGIN ADMIN
             </h4>
-            <p class="text-muted" style="font-size: 14px;">Fasilitas Desa</p>
+            <p class="text-muted" style="font-size: 14px;">Fasilitas Desa Sistem ini dibuat untuk mempermudah pengelolaan data warga dan fasilitas umum di desa sehingga proses administrasi menjadi lebih efektif, tertata, dan mudah diakses.</p>
         </div>
 
 
