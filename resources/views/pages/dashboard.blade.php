@@ -1,4 +1,4 @@
-@extends('layouts.admin.app')
+@extends('layouts.app')
 
 @section('content')
     <!-- Main Content -->
@@ -28,7 +28,7 @@
                                         <a class="dropdown-item" href="#">June - August</a>
                                         <a class="dropdown-item" href="#">August - November</a>
                                     </div>
-                                    <!-- Login -->
+                                    {{-- <!-- Login -->
                                     <a href="{{ route('login.destroy', 1) }}"
                                         onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
                                         class="btn btn-danger btn-sm">Logout</a>
@@ -38,7 +38,12 @@
                                         @csrf
                                         @method('DELETE')
                                     </form>
-                                    <!-- Login -->
+                                    <!-- Login --> --}}
+
+                                    <a href="{{ route('login.destroy') }}" class="btn btn-danger btn-sm">
+                                        Logout
+                                    </a>
+
                                 </div>
                             </div>
                         </div>

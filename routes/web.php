@@ -21,11 +21,15 @@ Route::post('/auth/login', [AuthController::class, 'login']);
 Route::get('/auth/logout', [AuthController::class, 'logout']);
 
 
-Route::resource('login', LoginController::class)->only(['index','store','destroy']);
+// Route::resource('login', LoginController::class)->only(['index','store','destroy']);
+Route::get('/login', [LoginController::class, 'index'])->name('login.index');
+Route::post('/login', [LoginController::class, 'store'])->name('login.store');
+Route::get('/logout', [LoginController::class, 'destroy'])->name('login.destroy');
 
-Route::get('/dashboard', function () {
-    return view('admin.dashboard');
-})->name('dashboard');
+
+
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+
 
 Route::resource('warga', WargaController::class);
 Route::resource('fasilitasumum', FasilitasUmumController::class);
