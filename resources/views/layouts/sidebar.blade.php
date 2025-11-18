@@ -5,7 +5,7 @@
         <!-- Dashboard -->
         <li class="nav-item">
             <a class="nav-link {{ request()->routeIs('dashboard.index') ? 'active' : '' }}"
-               href="{{ route('dashboard.index') }}">
+                href="{{ route('dashboard.index') }}">
                 <i class="fa-solid fa-gauge-high menu-icon"></i>
                 <span class="menu-title">Dashboard</span>
             </a>
@@ -23,8 +23,48 @@
             </a>
             <div class="collapse" id="fasilitas-umum">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item"><a class="nav-link" href="{{ route('fasilitasumum.index') }}">Lihat Data</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('fasilitasumum.create') }}">Tambah Data</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('fasilitasumum.index') }}">Lihat Data</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('fasilitasumum.create') }}">Tambah Data</a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+
+        <!-- Peminjaman Fasilitas -->
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#peminjaman-fasilitas">
+                <i class="fa-solid fa-handshake menu-icon"></i>
+                <span class="menu-title">Peminjaman Fasilitas</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="peminjaman-fasilitas">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('peminjaman.index') }}">Lihat Data</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('peminjaman.create') }}">Tambah Data</a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+
+        <!-- Pembayaran Fasilitas -->
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#pembayaran-fasilitas">
+                <i class="fa-solid fa-money-bill-wave menu-icon"></i>
+                <span class="menu-title">Pembayaran Fasilitas</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="pembayaran-fasilitas">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('pembayaran.index') }}">Lihat Data</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('pembayaran.create') }}">Tambah Data</a>
+                    </li>
                 </ul>
             </div>
         </li>

@@ -8,6 +8,8 @@ use App\Http\Controllers\WargaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FasilitasController;
 use App\Http\Controllers\FasilitasumumController;
+use App\Http\Controllers\PembayaranFasilitasController;
+use App\Http\Controllers\PeminjamanFasilitasController;
 
 
 
@@ -36,6 +38,11 @@ Route::resource('warga', WargaController::class);
 Route::resource('fasilitasumum', FasilitasUmumController::class);
 
 Route::resource('user', UserController::class);
+
+Route::resource('peminjaman', PeminjamanFasilitasController::class);
+Route::resource('pembayaran', PembayaranFasilitasController::class);
+
+
 
 
 
