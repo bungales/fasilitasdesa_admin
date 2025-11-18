@@ -12,8 +12,9 @@ use App\Http\Controllers\FasilitasumumController;
 
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('pages.login');
 });
+
 Route::get('/fasilitas', [FasilitasController::class, 'index']);
 
 Route::get('/auth', [AuthController::class, 'index']);
