@@ -7,7 +7,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\WargaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FasilitasController;
-use App\Http\Controllers\FasilitasumumController;
+use App\Http\Controllers\FasilitasUmumController;
 use App\Http\Controllers\PembayaranFasilitasController;
 use App\Http\Controllers\PeminjamanFasilitasController;
 
