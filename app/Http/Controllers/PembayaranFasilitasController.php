@@ -8,11 +8,48 @@ use Illuminate\Http\Request;
 
 class PembayaranFasilitasController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // Ambil semua pembayaran dengan relasi ke peminjaman, warga, dan fasilitas
-        $pembayaran = PembayaranFasilitas::with('peminjaman.warga', 'peminjaman.fasilitas')->get();
-        return view('pages.pembayaranfasilitas.index', compact('pembayaran'));
+
+        //  SEARCH
+
+        $search = $request->search;
+
+
+        //  FILTER METODE (opsional)
+
+        $filterMetode = $request->metode;
+
+        // Query dasar
+        $query = PembayaranFasilitas::with('peminjaman.warga', 'peminjaman.fasilitas');
+
+        // SEARCH
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->whereHas('peminjaman.warga', function ($w) use ($search) {
+                    $w->where('nama', 'like', "%$search%");
+                })
+                ->orWhereHas('peminjaman.fasilitas', function ($f) use ($search) {
+                    $f->where('nama', 'like', "%$search%");
+                })
+                ->orWhere('keterangan', 'like', "%$search%")
+                ->orWhere('metode', 'like', "%$search%");
+            });
+        }
+
+        // FILTER METODE
+        if ($filterMetode) {
+            $query->where('metode', $filterMetode);
+        }
+
+        // PAGINATION 
+        $pembayaran = $query->orderBy('bayar_id', 'DESC')->paginate(10);
+
+        return view('pages.pembayaranfasilitas.index', compact(
+            'pembayaran',
+            'search',
+            'filterMetode'
+        ));
     }
 
     public function create()
@@ -25,10 +62,10 @@ class PembayaranFasilitasController extends Controller
     {
         $request->validate([
             'pinjam_id' => 'required',
-            'tanggal' => 'required|date',
-            'jumlah' => 'required|numeric',
-            'metode' => 'required',
-            'keterangan' => 'nullable',
+            'tanggal'   => 'required|date',
+            'jumlah'    => 'required|numeric',
+            'metode'    => 'required',
+            'keterangan'=> 'nullable',
         ]);
 
         PembayaranFasilitas::create($request->all());
@@ -47,10 +84,10 @@ class PembayaranFasilitasController extends Controller
     {
         $request->validate([
             'pinjam_id' => 'required',
-            'tanggal' => 'required|date',
-            'jumlah' => 'required|numeric',
-            'metode' => 'required',
-            'keterangan' => 'nullable',
+            'tanggal'   => 'required|date',
+            'jumlah'    => 'required|numeric',
+            'metode'    => 'required',
+            'keterangan'=> 'nullable',
         ]);
 
         $pembayaran->update($request->all());

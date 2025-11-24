@@ -9,10 +9,42 @@ use Illuminate\Http\Request;
 
 class PeminjamanFasilitasController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $peminjaman = PeminjamanFasilitas::with(['fasilitas', 'warga'])->get();
-        return view('pages.peminjamanfasilitas.index', compact('peminjaman'));
+        // SEARCH + FILTER
+        $search = $request->search;
+        $filterStatus = $request->status;
+
+        // Query dasar
+        $query = PeminjamanFasilitas::with(['fasilitas', 'warga']);
+
+        //SEARCH
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->whereHas('warga', function ($w) use ($search) {
+                    $w->where('nama', 'like', "%$search%");
+                })
+                ->orWhereHas('fasilitas', function ($f) use ($search) {
+                    $f->where('nama', 'like', "%$search%");
+                })
+                ->orWhere('tujuan', 'like', "%$search%")
+                ->orWhere('status', 'like', "%$search%");
+            });
+        }
+
+        //  FILTER STATUS
+        if ($filterStatus) {
+            $query->where('status', $filterStatus);
+        }
+
+        // PAGINATION
+        $peminjaman = $query->orderBy('pinjam_id', 'DESC')->paginate(10);
+
+        return view('pages.peminjamanfasilitas.index', compact(
+            'peminjaman',
+            'search',
+            'filterStatus'
+        ));
     }
 
     public function create()

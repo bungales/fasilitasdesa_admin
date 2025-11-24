@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\User;
@@ -7,10 +8,32 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::all();
-        return view('pages.user.index', compact('users'));
+        // SEARCH
+        $search = $request->search;
+
+        // FILTER ROLE (opsional, jika ada field role)
+        $filterRole = $request->role;
+
+        // Query dasar
+        $query = User::query();
+
+        // Jika search
+        if ($search) {
+            $query->where('name', 'like', "%$search%")
+                  ->orWhere('email', 'like', "%$search%");
+        }
+
+        // Jika filter role
+        if ($filterRole) {
+            $query->where('role', $filterRole);
+        }
+
+        // Pagination
+        $users = $query->orderBy('id', 'DESC')->paginate(10);
+
+        return view('pages.user.index', compact('users', 'search', 'filterRole'));
     }
 
     public function create()
@@ -29,25 +52,16 @@ class UserController extends Controller
         User::create([
             'name'     => $request->name,
             'email'    => $request->email,
-            'password' => Hash::make($request->password), // WAJIB
+            'password' => Hash::make($request->password),
         ]);
 
-        return redirect()->route('user.index')->with('success', 'User berhasil ditambahkan');
+        return redirect()->route('user.index')->with('success', 'User berhasil ditambahkan!');
     }
 
-    // ✅ DITAMBAHKAN
     public function edit(User $user)
     {
         return view('pages.user.edit', compact('user'));
     }
-
-    // ✅ DITAMBAHKAN
-    public function destroy(User $user)
-    {
-        $user->delete();
-        return redirect()->route('user.index')->with('success', 'User berhasil dihapus');
-    }
-
 
     public function update(Request $request, User $user)
     {
@@ -68,6 +82,12 @@ class UserController extends Controller
 
         $user->update($data);
 
-        return redirect()->route('user.index')->with('success', 'User berhasil diupdate');
+        return redirect()->route('user.index')->with('success', 'User berhasil diperbarui!');
+    }
+
+    public function destroy(User $user)
+    {
+        $user->delete();
+        return redirect()->route('user.index')->with('success', 'User berhasil dihapus!');
     }
 }

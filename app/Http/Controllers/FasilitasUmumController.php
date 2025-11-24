@@ -7,13 +7,32 @@ use Illuminate\Http\Request;
 
 class FasilitasUmumController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        // SEARCH
+        $search = $request->search;
 
-    $fasilitas = FasilitasUmum::all();
-    return view('pages.fasilitasumum.index', compact('fasilitas'));
+        // FILTER JENIS
+        $filterJenis = $request->jenis;
 
+        // Query dasar
+        $query = FasilitasUmum::query();
 
+        // Jika search
+        if ($search) {
+            $query->where('nama', 'like', "%$search%")
+                  ->orWhere('alamat', 'like', "%$search%");
+        }
+
+        // Jika filter jenis
+        if ($filterJenis) {
+            $query->where('jenis', $filterJenis);
+        }
+
+        // Pagination
+        $fasilitas = $query->orderBy('fasilitas_id', 'DESC')->paginate(10);
+
+        return view('pages.fasilitasumum.index', compact('fasilitas', 'search', 'filterJenis'));
     }
 
     public function create()
@@ -39,7 +58,6 @@ class FasilitasUmumController extends Controller
 
     public function edit(FasilitasUmum $fasilitasumum)
     {
-
         return view('pages.fasilitasumum.edit', compact('fasilitasumum'));
     }
 
