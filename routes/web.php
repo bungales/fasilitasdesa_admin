@@ -42,6 +42,12 @@ Route::resource('user', UserController::class);
 Route::resource('peminjaman', PeminjamanFasilitasController::class);
 Route::resource('pembayaran', PembayaranFasilitasController::class);
 
+Route::resource('fasilitasumum', FasilitasUmumController::class);
+
+// Route untuk menghapus file media
+Route::delete('/fasilitasumum/{fasilitasId}/media/{mediaId}', [FasilitasUmumController::class, 'deleteMedia'])
+    ->name('fasilitasumum.deleteMedia');
+
 
 
 
