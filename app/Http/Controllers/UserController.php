@@ -13,7 +13,7 @@ class UserController extends Controller
         // SEARCH
         $search = $request->search;
 
-        // FILTER ROLE (opsional, jika ada field role)
+        // FILTER ROLE
         $filterRole = $request->role;
 
         // Query dasar
@@ -33,12 +33,16 @@ class UserController extends Controller
         // Pagination
         $users = $query->orderBy('id', 'DESC')->paginate(10);
 
-        return view('pages.user.index', compact('users', 'search', 'filterRole'));
+        // Get all roles for filter dropdown
+        $roles = User::getRoles();
+
+        return view('pages.user.index', compact('users', 'search', 'filterRole', 'roles'));
     }
 
     public function create()
     {
-        return view('pages.user.create');
+        $roles = User::getRoles();
+        return view('pages.user.create', compact('roles'));
     }
 
     public function store(Request $request)
@@ -47,12 +51,14 @@ class UserController extends Controller
             'name'     => 'required',
             'email'    => 'required|email|unique:users',
             'password' => 'required|confirmed|min:6',
+            'role'     => 'required|in:' . implode(',', User::getRoles()),
         ]);
 
         User::create([
             'name'     => $request->name,
             'email'    => $request->email,
             'password' => Hash::make($request->password),
+            'role'     => $request->role,
         ]);
 
         return redirect()->route('user.index')->with('success', 'User berhasil ditambahkan!');
@@ -60,7 +66,8 @@ class UserController extends Controller
 
     public function edit(User $user)
     {
-        return view('pages.user.edit', compact('user'));
+        $roles = User::getRoles();
+        return view('pages.user.edit', compact('user', 'roles'));
     }
 
     public function update(Request $request, User $user)
@@ -68,11 +75,13 @@ class UserController extends Controller
         $request->validate([
             'name'  => 'required',
             'email' => 'required|email|unique:users,email,' . $user->id,
+            'role'  => 'required|in:' . implode(',', User::getRoles()),
         ]);
 
         $data = [
             'name'  => $request->name,
             'email' => $request->email,
+            'role'  => $request->role,
         ];
 
         if ($request->password) {

@@ -20,14 +20,26 @@
                     <div class="alert alert-success">{{ session('success') }}</div>
                 @endif
 
-                {{-- 🔎 SEARCH --}}
-                <h5><strong>🔍 Pencarian Data</strong></h5>
+                {{-- 🔎 SEARCH & FILTER --}}
+                <h5><strong>🔍 Pencarian & Filter Data</strong></h5>
                 <form action="{{ route('user.index') }}" method="GET" class="row g-2 mb-3">
 
                     {{-- SEARCH --}}
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <input type="text" name="search" value="{{ request('search') }}"
                                class="form-control" placeholder="Cari nama / email...">
+                    </div>
+
+                    {{-- FILTER ROLE --}}
+                    <div class="col-md-3">
+                        <select name="role" class="form-select">
+                            <option value="">Semua Role</option>
+                            @foreach($roles as $role)
+                                <option value="{{ $role }}" {{ request('role') == $role ? 'selected' : '' }}>
+                                    {{ $role }}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
 
                     {{-- SUBMIT --}}
@@ -49,6 +61,7 @@
                                 <th>#</th>
                                 <th>Nama</th>
                                 <th>Email</th>
+                                <th>Role</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -60,6 +73,15 @@
                                     </td>
                                     <td>{{ $item->name }}</td>
                                     <td>{{ $item->email }}</td>
+                                    <td class="text-center">
+                                        <span class="badge bg-{{
+                                            $item->role == 'Super Admin' ? 'danger' :
+                                            ($item->role == 'Administrator' ? 'warning' :
+                                            ($item->role == 'Mitra' ? 'info' : 'success'))
+                                        }}">
+                                            {{ $item->role }}
+                                        </span>
+                                    </td>
                                     <td class="text-center">
                                         <div class="d-flex justify-content-center gap-2">
                                             {{-- Edit --}}
@@ -85,7 +107,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="4" class="text-center text-muted">Belum ada user</td>
+                                    <td colspan="5" class="text-center text-muted">Belum ada user</td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -117,5 +139,10 @@
 }
 .btn-outline-warning:hover { background-color: #ffc107; color: #fff; }
 .btn-outline-danger:hover { background-color: #dc3545; color: #fff; }
+
+.badge {
+    font-size: 0.85em;
+    padding: 5px 10px;
+}
 </style>
 @endsection
