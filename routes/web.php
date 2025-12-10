@@ -11,46 +11,41 @@ use App\Http\Controllers\FasilitasUmumController;
 use App\Http\Controllers\PembayaranFasilitasController;
 use App\Http\Controllers\PeminjamanFasilitasController;
 
-
-
 Route::get('/', function () {
     return view('pages.login');
 });
-
-Route::get('/fasilitas', [FasilitasController::class, 'index']);
 
 Route::get('/auth', [AuthController::class, 'index']);
 Route::post('/auth/login', [AuthController::class, 'login']);
 Route::get('/auth/logout', [AuthController::class, 'logout']);
 
-
-// Route::resource('login', LoginController::class)->only(['index','store','destroy']);
 Route::get('/login', [LoginController::class, 'index'])->name('login.index');
 Route::post('/login', [LoginController::class, 'store'])->name('login.store');
 Route::get('/logout', [LoginController::class, 'destroy'])->name('login.destroy');
 
+// Route yang TIDAK memerlukan login (akses publik)
+Route::get('/fasilitas', [FasilitasController::class, 'index']);
+
+// Route yang memerlukan login (dilindungi dengan middleware)
+Route::group(['middleware' => ['checkislogin']], function () {
+    // Dashboard
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+
+    // Resource routes yang memerlukan login
+    Route::resource('warga', WargaController::class);
+    Route::resource('fasilitasumum', FasilitasUmumController::class);
+    Route::resource('user', UserController::class); // SEMUA USER BISA AKSES
+    Route::resource('peminjaman', PeminjamanFasilitasController::class);
+    Route::resource('pembayaran', PembayaranFasilitasController::class);
+
+    // Route untuk menghapus file media
+    Route::delete('/fasilitasumum/{fasilitasId}/media/{mediaId}', [FasilitasUmumController::class, 'deleteMedia'])
+        ->name('fasilitasumum.deleteMedia');
 
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+    // KOMEN kalau mau bisa akses semua
+    Route::group(['middleware' => ['checkrole:Super Admin']], function () {
+        Route::resource('user', UserController::class);
+    });
 
-
-Route::resource('warga', WargaController::class);
-Route::resource('fasilitasumum', FasilitasUmumController::class);
-
-Route::resource('user', UserController::class);
-
-Route::resource('peminjaman', PeminjamanFasilitasController::class);
-Route::resource('pembayaran', PembayaranFasilitasController::class);
-
-Route::resource('fasilitasumum', FasilitasUmumController::class);
-
-// Route untuk menghapus file media
-Route::delete('/fasilitasumum/{fasilitasId}/media/{mediaId}', [FasilitasUmumController::class, 'deleteMedia'])
-    ->name('fasilitasumum.deleteMedia');
-
-
-
-
-
-
-
+});
