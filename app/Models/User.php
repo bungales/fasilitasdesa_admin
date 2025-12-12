@@ -21,7 +21,7 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    // Optional: Const untuk role
+    //  Const untuk role
     const ROLE_SUPER_ADMIN   = 'Super Admin';
     const ROLE_ADMINISTRATOR = 'Administrator';
     const ROLE_PELANGGAN     = 'Pelanggan';

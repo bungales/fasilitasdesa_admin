@@ -9,7 +9,7 @@
                     <div class="row">
                         <div class="col-12 col-xl-8 mb-4 mb-xl-0">
                             <h3 class="font-weight-bold">Welcome Bunga Lestari</h3>
-                            <h6 class="font-weight-normal mb-0"> Selamat Datang Projek bina desa saya fasilitas
+                            <h6 class="font-weight-normal mb-0">Selamat Datang Projek bina desa saya fasilitas
                                 desa
                                 <span class="text-primary"> fasilitas umum admin!</span>
                             </h6>
@@ -28,22 +28,9 @@
                                         <a class="dropdown-item" href="#">June - August</a>
                                         <a class="dropdown-item" href="#">August - November</a>
                                     </div>
-                                    {{-- <!-- Login -->
-                                    <a href="{{ route('login.destroy', 1) }}"
-                                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-                                        class="btn btn-danger btn-sm">Logout</a>
-
-                                    <form id="logout-form" action="{{ route('login.destroy', 1) }}" method="POST"
-                                        style="display: none;">
-                                        @csrf
-                                        @method('DELETE')
-                                    </form>
-                                    <!-- Login --> --}}
-
                                     <a href="{{ route('login.destroy') }}" class="btn btn-danger btn-sm">
                                         Logout
                                     </a>
-
                                 </div>
                             </div>
                         </div>
@@ -75,7 +62,7 @@
                         <div class="col-md-6 mb-4 stretch-card transparent">
                             <div class="card card-tale">
                                 <div class="card-body">
-                                    <p class="mb-4">Today’s Bookings</p>
+                                    <p class="mb-4">Today's Bookings</p>
                                     <p class="fs-30 mb-2">4006</p>
                                     <p>10.00% (30 days)</p>
                                 </div>
@@ -113,6 +100,100 @@
                     </div>
                 </div>
             </div>
+
+            <!-- ======================= -->
+            <!-- IDENTITAS PENGEMBANG - DIPINDAHKAN KE ATAS -->
+            <!-- ======================= -->
+            <div class="row mt-4">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title mb-4">Tentang Pengembang</h4>
+                            <div class="row align-items-center">
+                                <!-- Foto Profil -->
+                                <div class="col-md-3 text-center">
+                                    <div class="developer-photo mb-3">
+                                        <img src="{{ asset('assets-admin/images/WhatsApp Image 2025-05-24 at 20.44.53_17f0cf70.jpg') }}"
+                                             alt="Foto Bunga Lestari"
+                                             class="img-fluid rounded-circle shadow"
+                                             style="width: 150px; height: 150px; object-fit: cover; border: 4px solid #f0f0f0;">
+                                    </div>
+                                    <div class="developer-social mt-3">
+                                        <a href="https://linkedin.com/in/bungalestari" target="_blank" class="btn btn-primary btn-sm m-1">
+                                            <i class="mdi mdi-linkedin"></i>
+                                        </a>
+                                        <a href="https://github.com/bungalestari" target="_blank" class="btn btn-dark btn-sm m-1">
+                                            <i class="mdi mdi-github"></i>
+                                        </a>
+                                        <a href="https://instagram.com/bunga.lestari" target="_blank" class="btn btn-danger btn-sm m-1">
+                                            <i class="mdi mdi-instagram"></i>
+                                        </a>
+                                        <a href="mailto:bunga24si@mahasiswa.pcr.ac.id" class="btn btn-info btn-sm m-1">
+                                            <i class="mdi mdi-email"></i>
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <!-- Informasi Identitas -->
+                                <div class="col-md-5">
+                                    <h5 class="font-weight-bold mb-3">Biodata Pengembang</h5>
+                                    <div class="developer-info">
+                                        <div class="mb-3">
+                                            <p class="mb-1"><strong>Nama Lengkap:</strong> Bunga Lestari</p>
+                                            <p class="mb-1"><strong>NIM:</strong> 2457301028</p>
+                                            <p class="mb-1"><strong>Program Studi:</strong> Sistem Informasi</p>
+                                            <p class="mb-1"><strong>Universitas:</strong> Politeknik Caltek Riau</p>
+                                            <p class="mb-1"><strong>Email:</strong> bunga24si@mahasiswa.pcr.ac.id</p>
+                                            <p class="mb-1"><strong>No. Telepon:</strong> +62 812-3456-7890</p>
+                                        </div>
+
+                                        <div class="mt-4">
+                                            <h6 class="font-weight-bold mb-2">Keterangan:</h6>
+                                            <p class="text-muted mb-0">
+                                                Aplikasi ini dikembangkan sebagai tugas Framework di Semester 3politeknik caltek riau
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Informasi Proyek -->
+                                <div class="col-md-4">
+                                    <div class="card bg-light">
+                                        <div class="card-body">
+                                            <h6 class="card-title font-weight-bold">Informasi Proyek</h6>
+                                            <div class="project-info">
+                                                <p class="mb-2"><strong>Nama Proyek:</strong> Sistem Bina Desa Fasilitas Umum</p>
+                                                <p class="mb-2"><strong>Mata Kuliah:</strong> Framework Pemrograman</p>
+                                                <p class="mb-2"><strong>Semester:</strong> 3</p>
+                                                <p class="mb-2"><strong>Teknologi:</strong></p>
+                                                <ul class="list-unstyled mb-3">
+                                                    <li><span class="badge badge-primary mr-1">Laravel</span></li>
+                                                    <li><span class="badge badge-success mr-1">Bootstrap</span></li>
+                                                    <li><span class="badge badge-info mr-1">MySQL</span></li>
+                                                    <li><span class="badge badge-warning mr-1">JavaScript</span></li>
+                                                </ul>
+                                                <p class="mb-0"><strong>Status:</strong>
+                                                    <span class="badge badge-success">Aktif</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-3 text-center">
+                                        <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#developerDetailModal">
+                                            <i class="mdi mdi-information"></i> Detail Lengkap
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ======================= -->
+            <!-- END IDENTITAS PENGEMBANG -->
+            <!-- ======================= -->
+
             <div class="row">
                 <div class="col-md-6 grid-margin stretch-card">
                     <div class="card">
@@ -159,600 +240,170 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-12 grid-margin stretch-card">
-                    <div class="card position-relative">
-                        <div class="card-body">
-                            <div id="detailedReports" class="carousel slide detailed-report-carousel position-static pt-2"
-                                data-ride="carousel">
-                                <div class="carousel-inner">
-                                    <div class="carousel-item active">
-                                        <div class="row">
-                                            <div class="col-md-12 col-xl-3 d-flex flex-column justify-content-start">
-                                                <div class="ml-xl-4 mt-3">
-                                                    <p class="card-title">Detailed Reports</p>
-                                                    <h1 class="text-primary">$34040</h1>
-                                                    <h3 class="font-weight-500 mb-xl-4 text-primary">North
-                                                        America</h3>
-                                                    <p class="mb-2 mb-xl-0">The total number of sessions within
-                                                        the date range. It is the period time a user is actively
-                                                        engaged with your website, page or app, etc</p>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12 col-xl-9">
-                                                <div class="row">
-                                                    <div class="col-md-6 border-right">
-                                                        <div class="table-responsive mb-3 mb-md-0 mt-3">
-                                                            <table class="table table-borderless report-table">
-                                                                <tr>
-                                                                    <td class="text-muted">Illinois</td>
-                                                                    <td class="w-100 px-0">
-                                                                        <div class="progress progress-md mx-4">
-                                                                            <div class="progress-bar bg-primary"
-                                                                                role="progressbar" style="width: 70%"
-                                                                                aria-valuenow="70" aria-valuemin="0"
-                                                                                aria-valuemax="100"></div>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td>
-                                                                        <h5 class="font-weight-bold mb-0">713
-                                                                        </h5>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="text-muted">Washington</td>
-                                                                    <td class="w-100 px-0">
-                                                                        <div class="progress progress-md mx-4">
-                                                                            <div class="progress-bar bg-warning"
-                                                                                role="progressbar" style="width: 30%"
-                                                                                aria-valuenow="30" aria-valuemin="0"
-                                                                                aria-valuemax="100"></div>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td>
-                                                                        <h5 class="font-weight-bold mb-0">583
-                                                                        </h5>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="text-muted">Mississippi</td>
-                                                                    <td class="w-100 px-0">
-                                                                        <div class="progress progress-md mx-4">
-                                                                            <div class="progress-bar bg-danger"
-                                                                                role="progressbar" style="width: 95%"
-                                                                                aria-valuenow="95" aria-valuemin="0"
-                                                                                aria-valuemax="100"></div>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td>
-                                                                        <h5 class="font-weight-bold mb-0">924
-                                                                        </h5>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="text-muted">California</td>
-                                                                    <td class="w-100 px-0">
-                                                                        <div class="progress progress-md mx-4">
-                                                                            <div class="progress-bar bg-info"
-                                                                                role="progressbar" style="width: 60%"
-                                                                                aria-valuenow="60" aria-valuemin="0"
-                                                                                aria-valuemax="100"></div>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td>
-                                                                        <h5 class="font-weight-bold mb-0">664
-                                                                        </h5>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="text-muted">Maryland</td>
-                                                                    <td class="w-100 px-0">
-                                                                        <div class="progress progress-md mx-4">
-                                                                            <div class="progress-bar bg-primary"
-                                                                                role="progressbar" style="width: 40%"
-                                                                                aria-valuenow="40" aria-valuemin="0"
-                                                                                aria-valuemax="100"></div>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td>
-                                                                        <h5 class="font-weight-bold mb-0">560
-                                                                        </h5>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="text-muted">Alaska</td>
-                                                                    <td class="w-100 px-0">
-                                                                        <div class="progress progress-md mx-4">
-                                                                            <div class="progress-bar bg-danger"
-                                                                                role="progressbar" style="width: 75%"
-                                                                                aria-valuenow="75" aria-valuemin="0"
-                                                                                aria-valuemax="100"></div>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td>
-                                                                        <h5 class="font-weight-bold mb-0">793
-                                                                        </h5>
-                                                                    </td>
-                                                                </tr>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6 mt-3">
-                                                        <canvas id="north-america-chart"></canvas>
-                                                        <div id="north-america-legend"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="carousel-item">
-                                        <div class="row">
-                                            <div class="col-md-12 col-xl-3 d-flex flex-column justify-content-start">
-                                                <div class="ml-xl-4 mt-3">
-                                                    <p class="card-title">Detailed Reports</p>
-                                                    <h1 class="text-primary">$34040</h1>
-                                                    <h3 class="font-weight-500 mb-xl-4 text-primary">North
-                                                        America</h3>
-                                                    <p class="mb-2 mb-xl-0">The total number of sessions within
-                                                        the date range. It is the period time a user is actively
-                                                        engaged with your website, page or app, etc</p>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12 col-xl-9">
-                                                <div class="row">
-                                                    <div class="col-md-6 border-right">
-                                                        <div class="table-responsive mb-3 mb-md-0 mt-3">
-                                                            <table class="table table-borderless report-table">
-                                                                <tr>
-                                                                    <td class="text-muted">Illinois</td>
-                                                                    <td class="w-100 px-0">
-                                                                        <div class="progress progress-md mx-4">
-                                                                            <div class="progress-bar bg-primary"
-                                                                                role="progressbar" style="width: 70%"
-                                                                                aria-valuenow="70" aria-valuemin="0"
-                                                                                aria-valuemax="100"></div>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td>
-                                                                        <h5 class="font-weight-bold mb-0">713
-                                                                        </h5>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="text-muted">Washington</td>
-                                                                    <td class="w-100 px-0">
-                                                                        <div class="progress progress-md mx-4">
-                                                                            <div class="progress-bar bg-warning"
-                                                                                role="progressbar" style="width: 30%"
-                                                                                aria-valuenow="30" aria-valuemin="0"
-                                                                                aria-valuemax="100"></div>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td>
-                                                                        <h5 class="font-weight-bold mb-0">583
-                                                                        </h5>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="text-muted">Mississippi</td>
-                                                                    <td class="w-100 px-0">
-                                                                        <div class="progress progress-md mx-4">
-                                                                            <div class="progress-bar bg-danger"
-                                                                                role="progressbar" style="width: 95%"
-                                                                                aria-valuenow="95" aria-valuemin="0"
-                                                                                aria-valuemax="100"></div>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td>
-                                                                        <h5 class="font-weight-bold mb-0">924
-                                                                        </h5>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="text-muted">California</td>
-                                                                    <td class="w-100 px-0">
-                                                                        <div class="progress progress-md mx-4">
-                                                                            <div class="progress-bar bg-info"
-                                                                                role="progressbar" style="width: 60%"
-                                                                                aria-valuenow="60" aria-valuemin="0"
-                                                                                aria-valuemax="100"></div>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td>
-                                                                        <h5 class="font-weight-bold mb-0">664
-                                                                        </h5>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="text-muted">Maryland</td>
-                                                                    <td class="w-100 px-0">
-                                                                        <div class="progress progress-md mx-4">
-                                                                            <div class="progress-bar bg-primary"
-                                                                                role="progressbar" style="width: 40%"
-                                                                                aria-valuenow="40" aria-valuemin="0"
-                                                                                aria-valuemax="100"></div>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td>
-                                                                        <h5 class="font-weight-bold mb-0">560
-                                                                        </h5>
-                                                                    </td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="text-muted">Alaska</td>
-                                                                    <td class="w-100 px-0">
-                                                                        <div class="progress progress-md mx-4">
-                                                                            <div class="progress-bar bg-danger"
-                                                                                role="progressbar" style="width: 75%"
-                                                                                aria-valuenow="75" aria-valuemin="0"
-                                                                                aria-valuemax="100"></div>
-                                                                        </div>
-                                                                    </td>
-                                                                    <td>
-                                                                        <h5 class="font-weight-bold mb-0">793
-                                                                        </h5>
-                                                                    </td>
-                                                                </tr>
-                                                            </table>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-6 mt-3">
-                                                        <canvas id="south-america-chart"></canvas>
-                                                        <div id="south-america-legend"></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <a class="carousel-control-prev" href="#detailedReports" role="button"
-                                    data-slide="prev">
-                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    <span class="sr-only">Previous</span>
-                                </a>
-                                <a class="carousel-control-next" href="#detailedReports" role="button"
-                                    data-slide="next">
-                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                    <span class="sr-only">Next</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-7 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <p class="card-title mb-0">Top Products</p>
-                            <div class="table-responsive">
-                                <table class="table table-striped table-borderless">
-                                    <thead>
-                                        <tr>
-                                            <th>Product</th>
-                                            <th>Price</th>
-                                            <th>Date</th>
-                                            <th>Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Search Engine Marketing</td>
-                                            <td class="font-weight-bold">$362</td>
-                                            <td>21 Sep 2018</td>
-                                            <td class="font-weight-medium">
-                                                <div class="badge badge-success">Completed</div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Search Engine Optimization</td>
-                                            <td class="font-weight-bold">$116</td>
-                                            <td>13 Jun 2018</td>
-                                            <td class="font-weight-medium">
-                                                <div class="badge badge-success">Completed</div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Display Advertising</td>
-                                            <td class="font-weight-bold">$551</td>
-                                            <td>28 Sep 2018</td>
-                                            <td class="font-weight-medium">
-                                                <div class="badge badge-warning">Pending</div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Pay Per Click Advertising</td>
-                                            <td class="font-weight-bold">$523</td>
-                                            <td>30 Jun 2018</td>
-                                            <td class="font-weight-medium">
-                                                <div class="badge badge-warning">Pending</div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>E-Mail Marketing</td>
-                                            <td class="font-weight-bold">$781</td>
-                                            <td>01 Nov 2018</td>
-                                            <td class="font-weight-medium">
-                                                <div class="badge badge-danger">Cancelled</div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Referral Marketing</td>
-                                            <td class="font-weight-bold">$283</td>
-                                            <td>20 Mar 2018</td>
-                                            <td class="font-weight-medium">
-                                                <div class="badge badge-warning">Pending</div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Social media marketing</td>
-                                            <td class="font-weight-bold">$897</td>
-                                            <td>26 Oct 2018</td>
-                                            <td class="font-weight-medium">
-                                                <div class="badge badge-success">Completed</div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-5 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">To Do Lists</h4>
-                            <div class="list-wrapper pt-2">
-                                <ul class="d-flex flex-column-reverse todo-list todo-list-custom">
-                                    <li>
-                                        <div class="form-check form-check-flat">
-                                            <label class="form-check-label">
-                                                <input class="checkbox" type="checkbox">
-                                                Meeting with Urban Team
-                                            </label>
-                                        </div>
-                                        <i class="remove ti-close"></i>
-                                    </li>
-                                    <li class="completed">
-                                        <div class="form-check form-check-flat">
-                                            <label class="form-check-label">
-                                                <input class="checkbox" type="checkbox" checked>
-                                                Duplicate a project for new customer
-                                            </label>
-                                        </div>
-                                        <i class="remove ti-close"></i>
-                                    </li>
-                                    <li>
-                                        <div class="form-check form-check-flat">
-                                            <label class="form-check-label">
-                                                <input class="checkbox" type="checkbox">
-                                                Project meeting with CEO
-                                            </label>
-                                        </div>
-                                        <i class="remove ti-close"></i>
-                                    </li>
-                                    <li class="completed">
-                                        <div class="form-check form-check-flat">
-                                            <label class="form-check-label">
-                                                <input class="checkbox" type="checkbox" checked>
-                                                Follow up of team zilla
-                                            </label>
-                                        </div>
-                                        <i class="remove ti-close"></i>
-                                    </li>
-                                    <li>
-                                        <div class="form-check form-check-flat">
-                                            <label class="form-check-label">
-                                                <input class="checkbox" type="checkbox">
-                                                Level up for Antony
-                                            </label>
-                                        </div>
-                                        <i class="remove ti-close"></i>
-                                    </li>
-                                </ul>
-                            </div>
-                            <div class="add-items d-flex mb-0 mt-2">
-                                <input type="text" class="form-control todo-list-input" placeholder="Add new task">
-                                <button class="add btn btn-icon text-primary todo-list-add-btn bg-transparent"><i
-                                        class="icon-circle-plus"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 stretch-card grid-margin">
-                    <div class="card">
-                        <div class="card-body">
-                            <p class="card-title mb-0">Projects</p>
-                            <div class="table-responsive">
-                                <table class="table table-borderless">
-                                    <thead>
-                                        <tr>
-                                            <th class="pl-0  pb-2 border-bottom">Places</th>
-                                            <th class="border-bottom pb-2">Orders</th>
-                                            <th class="border-bottom pb-2">Users</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td class="pl-0">Kentucky</td>
-                                            <td>
-                                                <p class="mb-0"><span class="font-weight-bold mr-2">65</span>(2.15%)
-                                                </p>
-                                            </td>
-                                            <td class="text-muted">65</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="pl-0">Ohio</td>
-                                            <td>
-                                                <p class="mb-0"><span class="font-weight-bold mr-2">54</span>(3.25%)
-                                                </p>
-                                            </td>
-                                            <td class="text-muted">51</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="pl-0">Nevada</td>
-                                            <td>
-                                                <p class="mb-0"><span class="font-weight-bold mr-2">22</span>(2.22%)
-                                                </p>
-                                            </td>
-                                            <td class="text-muted">32</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="pl-0">North Carolina</td>
-                                            <td>
-                                                <p class="mb-0"><span class="font-weight-bold mr-2">46</span>(3.27%)
-                                                </p>
-                                            </td>
-                                            <td class="text-muted">15</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="pl-0">Montana</td>
-                                            <td>
-                                                <p class="mb-0"><span class="font-weight-bold mr-2">17</span>(1.25%)
-                                                </p>
-                                            </td>
-                                            <td class="text-muted">25</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="pl-0">Nevada</td>
-                                            <td>
-                                                <p class="mb-0"><span class="font-weight-bold mr-2">52</span>(3.11%)
-                                                </p>
-                                            </td>
-                                            <td class="text-muted">71</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="pl-0 pb-0">Louisiana</td>
-                                            <td class="pb-0">
-                                                <p class="mb-0"><span class="font-weight-bold mr-2">25</span>(1.32%)
-                                                </p>
-                                            </td>
-                                            <td class="pb-0">14</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4 stretch-card grid-margin">
-                    <div class="row">
-                        <div class="col-md-12 grid-margin stretch-card">
-                            <div class="card">
 
-                            </div>
-                        </div>
-                        <div class="col-md-12 stretch-card grid-margin grid-margin-md-0">
-                            <div class="card data-icon-card-primary">
-                                <div class="card-body">
-                                    <p class="card-title text-white">Number of Meetings</p>
-                                    <div class="row">
-                                        <div class="col-8 text-white">
-                                            <h3>34040</h3>
-                                            <p class="text-white font-weight-500 mb-0">The total number of
-                                                sessions within the date range.It is calculated as the sum .
-                                            </p>
-                                        </div>
-                                        <div class="col-4 background-icon">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <!-- Sisanya dari konten dashboard yang asli -->
+            <!-- ... (tambahkan sisa konten dashboard di sini jika ada) ... -->
+
+        </div>
+        <!-- content-wrapper ends -->
+    </div>
+    <!-- Main Content -->
+
+    <!-- Developer Detail Modal -->
+    <div class="modal fade" id="developerDetailModal" tabindex="-1" role="dialog" aria-labelledby="developerDetailModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="developerDetailModalLabel">Detail Lengkap Pengembang</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-                <div class="col-md-4 stretch-card grid-margin">
-                    <div class="card">
-                        <div class="card-body">
-                            <p class="card-title">Notifications</p>
-                            <ul class="icon-data-list">
-                                <li>
-                                    <div class="d-flex">
-                                        <img src="{{ asset('assets-admin/images/faces/face1.jpg') }}" alt="user">
-                                        <div>
-                                            <p class="text-info mb-1">Isabella Becker</p>
-                                            <p class="mb-0">Sales dashboard have been created</p>
-                                            <small>9:30 am</small>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="d-flex">
-                                        <img src="{{ asset('assets-admin/images/faces/face2.jpg') }}" alt="user">
-                                        <div>
-                                            <p class="text-info mb-1">Adam Warren</p>
-                                            <p class="mb-0">You have done a great job #TW111</p>
-                                            <small>10:30 am</small>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="d-flex">
-                                        <img src="{{ asset('assets-admin/images/faces/face3.jpg') }}" alt="user">
-                                        <div>
-                                            <p class="text-info mb-1">Leonard Thornton</p>
-                                            <p class="mb-0">Sales dashboard have been created</p>
-                                            <small>11:30 am</small>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="d-flex">
-                                        <img src="{{ asset('assets-admin/images/faces/face4.jpg') }}" alt="user">
-                                        <div>
-                                            <p class="text-info mb-1">George Morrison</p>
-                                            <p class="mb-0">Sales dashboard have been created</p>
-                                            <small>8:50 am</small>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="d-flex">
-                                        <img src="{{ asset('assets-admin/images/faces/face5.jpg') }}" alt="user">
-                                        <div>
-                                            <p class="text-info mb-1">Ryan Cortez</p>
-                                            <p class="mb-0">Herbs are fun and easy to grow.</p>
-                                            <small>9:00 am</small>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-4 text-center">
+                            <img src="{{ asset('assets-admin/images/WhatsApp Image 2025-05-24 at 20.44.53_17f0cf70.jpg') }}"
+                                 alt="Foto Bunga Lestari"
+                                 class="img-fluid rounded-circle mb-3"
+                                 style="width: 150px; height: 150px; object-fit: cover;">
+                            <h5>Bunga Lestari</h5>
+                            <p class="text-muted">NIM: 2457301028</p>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <p class="card-title">Advanced Table</p>
+                        <div class="col-md-8">
+                            <h6 class="font-weight-bold mb-3">Biodata Lengkap</h6>
                             <div class="row">
-                                <div class="col-12">
-                                    <div class="table-responsive">
-                                        <table id="example" class="display expandable-table" style="width:100%">
-                                            <thead>
-                                                <tr>
-                                                    <th>Quote#</th>
-                                                    <th>Product</th>
-                                                    <th>Business type</th>
-                                                    <th>Policy holder</th>
-                                                    <th>Premium</th>
-                                                    <th>Status</th>
-                                                    <th>Updated at</th>
-                                                    <th></th>
-                                                </tr>
-                                            </thead>
-                                        </table>
-                                    </div>
+                                <div class="col-md-6">
+                                    <p><strong>Program Studi:</strong><br>Sistem Informasi</p>
+                                    <p><strong>Universitas:</strong><br>Politeknik Caltek Riau</p>
+                                    <p><strong>Email:</strong><br>bunga24si@mahasiswa.pcr.ac.id</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <p><strong>Telepon:</strong><br>+62 812-3456-7890</p>
+                                    <p><strong>NIM:</strong><br>2457301028</p>
+                                    <p><strong>Semester:</strong><br>Semester 3</p>
+                                </div>
+                            </div>
+
+                            <h6 class="font-weight-bold mt-4 mb-3">Keterangan Proyek</h6>
+                            <p class="text-justify">
+                                Aplikasi Sistem Bina Desa Fasilitas Umum ini dikembangkan sebagai tugas mata kuliah
+                                <strong>Framework Pemrograman Semester 3</strong> di Politeknik Caltek Riau.
+                                Tujuan aplikasi ini adalah untuk mendigitalisasi administrasi dan pengelolaan
+                                fasilitas umum di tingkat desa, serta meningkatkan transparansi pelayanan publik.
+                            </p>
+
+                            <h6 class="font-weight-bold mt-4 mb-3">Teknologi yang Digunakan</h6>
+                            <div class="d-flex flex-wrap">
+                                <span class="badge badge-primary m-1 p-2">Laravel 9</span>
+                                <span class="badge badge-success m-1 p-2">Bootstrap 5</span>
+                                <span class="badge badge-info m-1 p-2">MySQL</span>
+                                <span class="badge badge-warning m-1 p-2">JavaScript</span>
+                                <span class="badge badge-secondary m-1 p-2">jQuery</span>
+                                <span class="badge badge-dark m-1 p-2">Chart.js</span>
+                                <span class="badge badge-danger m-1 p-2">Font Awesome</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-md-12">
+                            <h6 class="font-weight-bold mb-3">Kontak & Media Sosial</h6>
+                            <div class="text-center">
+                                <a href="https://linkedin.com/in/bungalestari" target="_blank" class="btn btn-primary btn-sm m-1">
+                                    <i class="mdi mdi-linkedin"></i> LinkedIn
+                                </a>
+                                <a href="https://github.com/bungalestari" target="_blank" class="btn btn-dark btn-sm m-1">
+                                    <i class="mdi mdi-github"></i> GitHub
+                                </a>
+                                <a href="https://instagram.com/bunga.lestari" target="_blank" class="btn btn-danger btn-sm m-1">
+                                    <i class="mdi mdi-instagram"></i> Instagram
+                                </a>
+                                <a href="mailto:bunga24si@mahasiswa.pcr.ac.id" class="btn btn-info btn-sm m-1">
+                                    <i class="mdi mdi-email"></i> Email
+                                </a>
+                                <a href="https://wa.me/6281234567890" target="_blank" class="btn btn-success btn-sm m-1">
+                                    <i class="mdi mdi-whatsapp"></i> WhatsApp
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-md-12">
+                            <div class="card bg-light">
+                                <div class="card-body">
+                                    <h6 class="font-weight-bold mb-2">Catatan:</h6>
+                                    <p class="mb-0">
+                                        <strong>Proyek ini merupakan bagian dari tugas mata kuliah Framework Pemrograman Semester 3
+                                        di Politeknik Caltek Riau dengan fokus pada peningkatan sistem administrasi desa melalui teknologi informasi.</strong>
+                                    </p>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
                 </div>
             </div>
         </div>
-        <!-- content-wrapper ends -->
-        <!-- Main Content -->
-    @endsection
+    </div>
+@endsection
+
+@push('styles')
+<style>
+    .developer-photo {
+        transition: transform 0.3s ease;
+    }
+    .developer-photo:hover {
+        transform: scale(1.05);
+    }
+    .developer-social .btn {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+    }
+    .developer-info p {
+        margin-bottom: 8px;
+        color: #555;
+    }
+    .badge {
+        font-size: 0.75rem;
+        padding: 0.25rem 0.5rem;
+    }
+    .card-title {
+        color: #2c3e50;
+        font-weight: 600;
+    }
+    .project-info ul li {
+        display: inline-block;
+    }
+    /* Responsive */
+    @media (max-width: 768px) {
+        .developer-photo img {
+            width: 120px !important;
+            height: 120px !important;
+        }
+    }
+</style>
+@endpush
+
+@push('scripts')
+<script>
+    $(document).ready(function() {
+        // Tambahkan efek hover pada tombol sosial media
+        $('.developer-social .btn').hover(
+            function() {
+                $(this).css('transform', 'translateY(-3px)');
+            },
+            function() {
+                $(this).css('transform', 'translateY(0)');
+            }
+        );
+    });
+</script>
+@endpush
