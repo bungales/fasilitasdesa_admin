@@ -26,8 +26,19 @@ Route::get('/logout', [LoginController::class, 'destroy'])->name('login.destroy'
 // Route yang TIDAK memerlukan login (akses publik)
 Route::get('/fasilitas', [FasilitasController::class, 'index']);
 
+// ============== TAMBAHAN ROUTE UNTUK CREATE USER ==============
+// Route untuk halaman tambah user (register) - bisa diakses tanpa login jika mau
+Route::get('/register', function () {
+    return view('pages.register'); // Akan kita buat view ini
+})->name('register.index');
+
+// Atau gunakan controller jika sudah ada
+Route::get('/user/create', [UserController::class, 'create'])->name('user.create');
+Route::post('/user', [UserController::class, 'store'])->name('user.store');
+// ==============================================================
+
 // Route yang memerlukan login (dilindungi dengan middleware)
-Route::group(['middleware' => ['checkislogin']], function () {
+// Route::group(['middleware' => ['checkislogin']], function () {
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 
@@ -44,8 +55,8 @@ Route::group(['middleware' => ['checkislogin']], function () {
 
 
     // KOMEN kalau mau bisa akses semua
-    Route::group(['middleware' => ['checkrole:Super Admin']], function () {
-        Route::resource('user', UserController::class);
-    });
+    // Route::group(['middleware' => ['checkrole:Super Admin']], function () {
+    //     Route::resource('user', UserController::class);
+    // });
 
-});
+// });
