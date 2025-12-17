@@ -42,4 +42,5 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
         background: #1EBE59;
         transform: scale(1.1);
     }
+
 </style>

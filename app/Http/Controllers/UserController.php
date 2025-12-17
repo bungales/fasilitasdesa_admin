@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -48,18 +49,27 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name'     => 'required',
-            'email'    => 'required|email|unique:users',
+            'name' => 'required',
+            'email' => 'required|email|unique:users',
             'password' => 'required|confirmed|min:6',
-            'role'     => 'required|in:' . implode(',', User::getRoles()),
+            'role' => 'required|in:' . implode(',', User::getRoles()),
+            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        User::create([
-            'name'     => $request->name,
-            'email'    => $request->email,
+        $data = [
+            'name' => $request->name,
+            'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role'     => $request->role,
-        ]);
+            'role' => $request->role,
+        ];
+
+        // Handle upload profile picture
+        if ($request->hasFile('profile_picture')) {
+            $imagePath = $request->file('profile_picture')->store('profile_pictures', 'public');
+            $data['profile_picture'] = $imagePath;
+        }
+
+        User::create($data);
 
         return redirect()->route('user.index')->with('success', 'User berhasil ditambahkan!');
     }
@@ -73,20 +83,41 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $request->validate([
-            'name'  => 'required',
+            'name' => 'required',
             'email' => 'required|email|unique:users,email,' . $user->id,
-            'role'  => 'required|in:' . implode(',', User::getRoles()),
+            'role' => 'required|in:' . implode(',', User::getRoles()),
+            'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $data = [
-            'name'  => $request->name,
+            'name' => $request->name,
             'email' => $request->email,
-            'role'  => $request->role,
+            'role' => $request->role,
         ];
 
         if ($request->password) {
             $request->validate(['password' => 'confirmed|min:6']);
             $data['password'] = Hash::make($request->password);
+        }
+
+        // Handle upload profile picture
+        if ($request->hasFile('profile_picture')) {
+            // Hapus gambar lama jika ada
+            if ($user->profile_picture && Storage::disk('public')->exists($user->profile_picture)) {
+                Storage::disk('public')->delete($user->profile_picture);
+            }
+
+            $imagePath = $request->file('profile_picture')->store('profile_pictures', 'public');
+            $data['profile_picture'] = $imagePath;
+        }
+
+        // Jika request hapus gambar
+        if ($request->has('remove_profile_picture') && $request->remove_profile_picture == '1') {
+            // Hapus gambar lama jika ada
+            if ($user->profile_picture && Storage::disk('public')->exists($user->profile_picture)) {
+                Storage::disk('public')->delete($user->profile_picture);
+            }
+            $data['profile_picture'] = null;
         }
 
         $user->update($data);
@@ -96,6 +127,11 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
+        // Hapus profile picture jika ada
+        if ($user->profile_picture && Storage::disk('public')->exists($user->profile_picture)) {
+            Storage::disk('public')->delete($user->profile_picture);
+        }
+
         $user->delete();
         return redirect()->route('user.index')->with('success', 'User berhasil dihapus!');
     }

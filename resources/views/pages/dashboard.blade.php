@@ -114,18 +114,20 @@
                                 <div class="col-md-3 text-center">
                                     <div class="developer-photo mb-3">
                                         <img src="{{ asset('assets-admin/images/WhatsApp Image 2025-05-24 at 20.44.53_17f0cf70.jpg') }}"
-                                             alt="Foto Bunga Lestari"
-                                             class="img-fluid rounded-circle shadow"
-                                             style="width: 150px; height: 150px; object-fit: cover; border: 4px solid #f0f0f0;">
+                                            alt="Foto Bunga Lestari" class="img-fluid rounded-circle shadow"
+                                            style="width: 150px; height: 150px; object-fit: cover; border: 4px solid #f0f0f0;">
                                     </div>
                                     <div class="developer-social mt-3">
-                                        <a href="https://linkedin.com/in/bungalestari" target="_blank" class="btn btn-primary btn-sm m-1">
+                                        <a href="https://linkedin.com/in/bungalestari" target="_blank"
+                                            class="btn btn-primary btn-sm m-1">
                                             <i class="mdi mdi-linkedin"></i>
                                         </a>
-                                        <a href="https://github.com/bungalestari" target="_blank" class="btn btn-dark btn-sm m-1">
+                                        <a href="https://github.com/bungalestari" target="_blank"
+                                            class="btn btn-dark btn-sm m-1">
                                             <i class="mdi mdi-github"></i>
                                         </a>
-                                        <a href="https://instagram.com/bunga.lestari" target="_blank" class="btn btn-danger btn-sm m-1">
+                                        <a href="https://instagram.com/bunga.lestari" target="_blank"
+                                            class="btn btn-danger btn-sm m-1">
                                             <i class="mdi mdi-instagram"></i>
                                         </a>
                                         <a href="mailto:bunga24si@mahasiswa.pcr.ac.id" class="btn btn-info btn-sm m-1">
@@ -150,7 +152,8 @@
                                         <div class="mt-4">
                                             <h6 class="font-weight-bold mb-2">Keterangan:</h6>
                                             <p class="text-muted mb-0">
-                                                Aplikasi ini dikembangkan sebagai tugas Framework di Semester 3politeknik caltek riau
+                                                Aplikasi ini dikembangkan sebagai tugas Framework di Semester 3politeknik
+                                                caltek riau
                                             </p>
                                         </div>
                                     </div>
@@ -162,7 +165,8 @@
                                         <div class="card-body">
                                             <h6 class="card-title font-weight-bold">Informasi Proyek</h6>
                                             <div class="project-info">
-                                                <p class="mb-2"><strong>Nama Proyek:</strong> Sistem Bina Desa Fasilitas Umum</p>
+                                                <p class="mb-2"><strong>Nama Proyek:</strong> Sistem Bina Desa Fasilitas
+                                                    Umum</p>
                                                 <p class="mb-2"><strong>Mata Kuliah:</strong> Framework Pemrograman</p>
                                                 <p class="mb-2"><strong>Semester:</strong> 3</p>
                                                 <p class="mb-2"><strong>Teknologi:</strong></p>
@@ -180,7 +184,8 @@
                                     </div>
 
                                     <div class="mt-3 text-center">
-                                        <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal" data-target="#developerDetailModal">
+                                        <button type="button" class="btn btn-outline-primary btn-sm" data-toggle="modal"
+                                            data-target="#developerDetailModal">
                                             <i class="mdi mdi-information"></i> Detail Lengkap
                                         </button>
                                     </div>
@@ -199,9 +204,9 @@
                     <div class="card">
                         <div class="card-body">
                             <p class="card-title">Order Details</p>
-                            <p class="font-weight-500">The total number of sessions within the date range. It
-                                is the period time a user is actively engaged with your website, page or app,
-                                etc</p>
+                            <p class="font-weight-500">Jumlah total sesi dalam rentang tanggal tersebut.
+                                Ini adalah periode waktu pengguna aktif berinteraksi dengan situs web, halaman, atau
+                                aplikasi Anda,dll</p>
                             <div class="d-flex flex-wrap mb-5">
                                 <div class="mr-5 mt-3">
                                     <p class="text-muted">Order value</p>
@@ -231,9 +236,9 @@
                                 <p class="card-title">Sales Report</p>
                                 <a href="#" class="text-info">View all</a>
                             </div>
-                            <p class="font-weight-500">The total number of sessions within the date range. It
-                                is the period time a user is actively engaged with your website, page or app,
-                                etc</p>
+                            <p class="font-weight-500">Jumlah total sesi dalam rentang tanggal tersebut.
+                                Ini adalah periode waktu pengguna aktif berinteraksi dengan situs web, halaman, atau
+                                aplikasi Anda,dll.</p>
                             <div id="sales-legend" class="chartjs-legend mt-4 mb-2"></div>
                             <canvas id="sales-chart"></canvas>
                         </div>
@@ -241,8 +246,113 @@
                 </div>
             </div>
 
-            <!-- Sisanya dari konten dashboard yang asli -->
-            <!-- ... (tambahkan sisa konten dashboard di sini jika ada) ... -->
+            <!-- FOOTER KHUSUS DASHBOARD -->
+            <div class="row mt-5">
+                <div class="col-12">
+                    <footer class="footer bg-light border-top py-4 mt-4">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-4 mb-3 mb-md-0">
+                                    <h5 class="font-weight-bold mb-3">
+                                        <i class="fas fa-info-circle text-primary mr-2"></i>Informasi Sistem
+                                    </h5>
+                                    <p class="text-muted small">
+                                        Sistem Bina Desa Fasilitas Umum adalah aplikasi untuk mengelola fasilitas dan data warga di tingkat desa secara digital.
+                                    </p>
+                                    <div class="d-flex mt-3">
+                                        <a href="#" class="text-muted mr-3">
+                                            <i class="fas fa-file-pdf mr-1"></i> Panduan
+                                        </a>
+                                        <a href="#" class="text-muted mr-3">
+                                            <i class="fas fa-video mr-1"></i> Tutorial
+                                        </a>
+                                        <a href="#" class="text-muted">
+                                            <i class="fas fa-question-circle mr-1"></i> FAQ
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 mb-3 mb-md-0">
+                                    <h5 class="font-weight-bold mb-3">
+                                        <i class="fas fa-link text-success mr-2"></i>Tautan Cepat
+                                    </h5>
+                                    <ul class="list-unstyled">
+                                        <li class="mb-2">
+                                            <a href="{{ route('warga.index') }}" class="text-muted">
+                                                <i class="fas fa-users mr-2"></i>Data Warga
+                                            </a>
+                                        </li>
+                                        <li class="mb-2">
+                                            <a href="#" class="text-muted">
+                                                <i class="fas fa-building mr-2"></i>Fasilitas Umum
+                                            </a>
+                                        </li>
+                                        <li class="mb-2">
+                                            <a href="#" class="text-muted">
+                                                <i class="fas fa-chart-bar mr-2"></i>Laporan
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="text-muted">
+                                                <i class="fas fa-cog mr-2"></i>Pengaturan
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <h5 class="font-weight-bold mb-3">
+                                        <i class="fas fa-id-card text-warning mr-2"></i>Kontak Pengembang
+                                    </h5>
+                                    <div class="contact-info">
+                                        <p class="mb-2">
+                                            <i class="fas fa-user-graduate mr-2"></i>
+                                            <span class="font-weight-medium">Bunga Lestari</span>
+                                        </p>
+                                        <p class="mb-2">
+                                            <i class="fas fa-university mr-2"></i>
+                                            Politeknik Caltek Riau
+                                        </p>
+                                        <p class="mb-2">
+                                            <i class="fas fa-envelope mr-2"></i>
+                                            bunga24si@mahasiswa.pcr.ac.id
+                                        </p>
+                                        <div class="mt-3">
+                                            <a href="https://wa.me/6281234567890" target="_blank" class="btn btn-success btn-sm mr-2">
+                                                <i class="fab fa-whatsapp"></i>
+                                            </a>
+                                            <a href="mailto:bunga24si@mahasiswa.pcr.ac.id" class="btn btn-info btn-sm mr-2">
+                                                <i class="fas fa-envelope"></i>
+                                            </a>
+                                            <a href="https://github.com/bungalestari" target="_blank" class="btn btn-dark btn-sm">
+                                                <i class="fab fa-github"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <hr class="my-4">
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p class="text-muted mb-0">
+                                        <i class="fas fa-village mr-1"></i>
+                                        © 2025 RuangKu - Sistem Pengelolaan Fasilitas Desa
+                                    </p>
+                                </div>
+                                <div class="col-md-6 text-right">
+                                    <p class="text-muted mb-0">
+                                        <i class="fas fa-heart text-danger mr-1"></i>
+                                        Dibangun dengan semangat desa
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+            <!-- END FOOTER KHUSUS DASHBOARD -->
 
         </div>
         <!-- content-wrapper ends -->
@@ -250,7 +360,8 @@
     <!-- Main Content -->
 
     <!-- Developer Detail Modal -->
-    <div class="modal fade" id="developerDetailModal" tabindex="-1" role="dialog" aria-labelledby="developerDetailModalLabel" aria-hidden="true">
+    <div class="modal fade" id="developerDetailModal" tabindex="-1" role="dialog"
+        aria-labelledby="developerDetailModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -263,9 +374,8 @@
                     <div class="row">
                         <div class="col-md-4 text-center">
                             <img src="{{ asset('assets-admin/images/WhatsApp Image 2025-05-24 at 20.44.53_17f0cf70.jpg') }}"
-                                 alt="Foto Bunga Lestari"
-                                 class="img-fluid rounded-circle mb-3"
-                                 style="width: 150px; height: 150px; object-fit: cover;">
+                                alt="Foto Bunga Lestari" class="img-fluid rounded-circle mb-3"
+                                style="width: 150px; height: 150px; object-fit: cover;">
                             <h5>Bunga Lestari</h5>
                             <p class="text-muted">NIM: 2457301028</p>
                         </div>
@@ -309,13 +419,16 @@
                         <div class="col-md-12">
                             <h6 class="font-weight-bold mb-3">Kontak & Media Sosial</h6>
                             <div class="text-center">
-                                <a href="https://linkedin.com/in/bungalestari" target="_blank" class="btn btn-primary btn-sm m-1">
+                                <a href="https://linkedin.com/in/bungalestari" target="_blank"
+                                    class="btn btn-primary btn-sm m-1">
                                     <i class="mdi mdi-linkedin"></i> LinkedIn
                                 </a>
-                                <a href="https://github.com/bungalestari" target="_blank" class="btn btn-dark btn-sm m-1">
+                                <a href="https://github.com/bungalestari" target="_blank"
+                                    class="btn btn-dark btn-sm m-1">
                                     <i class="mdi mdi-github"></i> GitHub
                                 </a>
-                                <a href="https://instagram.com/bunga.lestari" target="_blank" class="btn btn-danger btn-sm m-1">
+                                <a href="https://instagram.com/bunga.lestari" target="_blank"
+                                    class="btn btn-danger btn-sm m-1">
                                     <i class="mdi mdi-instagram"></i> Instagram
                                 </a>
                                 <a href="mailto:bunga24si@mahasiswa.pcr.ac.id" class="btn btn-info btn-sm m-1">
@@ -334,8 +447,10 @@
                                 <div class="card-body">
                                     <h6 class="font-weight-bold mb-2">Catatan:</h6>
                                     <p class="mb-0">
-                                        <strong>Proyek ini merupakan bagian dari tugas mata kuliah Framework Pemrograman Semester 3
-                                        di Politeknik Caltek Riau dengan fokus pada peningkatan sistem administrasi desa melalui teknologi informasi.</strong>
+                                        <strong>Proyek ini merupakan bagian dari tugas mata kuliah Framework Pemrograman
+                                            Semester 3
+                                            di Politeknik Caltek Riau dengan fokus pada peningkatan sistem administrasi desa
+                                            melalui teknologi informasi.</strong>
                                     </p>
                                 </div>
                             </div>
@@ -351,59 +466,116 @@
 @endsection
 
 @push('styles')
-<style>
-    .developer-photo {
-        transition: transform 0.3s ease;
-    }
-    .developer-photo:hover {
-        transform: scale(1.05);
-    }
-    .developer-social .btn {
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0;
-    }
-    .developer-info p {
-        margin-bottom: 8px;
-        color: #555;
-    }
-    .badge {
-        font-size: 0.75rem;
-        padding: 0.25rem 0.5rem;
-    }
-    .card-title {
-        color: #2c3e50;
-        font-weight: 600;
-    }
-    .project-info ul li {
-        display: inline-block;
-    }
-    /* Responsive */
-    @media (max-width: 768px) {
-        .developer-photo img {
-            width: 120px !important;
-            height: 120px !important;
+    <style>
+        .developer-photo {
+            transition: transform 0.3s ease;
         }
-    }
-</style>
+
+        .developer-photo:hover {
+            transform: scale(1.05);
+        }
+
+        .developer-social .btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
+
+        .developer-info p {
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        .badge {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+        }
+
+        .card-title {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .project-info ul li {
+            display: inline-block;
+        }
+
+        /* Styling untuk footer dashboard */
+        .footer {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 10px;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+        }
+
+        .footer h5 {
+            color: #2c3e50;
+            font-size: 1.1rem;
+        }
+
+        .footer a.text-muted:hover {
+            color: #007bff !important;
+            text-decoration: none;
+        }
+
+        .footer .contact-info p {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .footer .btn-sm {
+            width: 36px;
+            height: 36px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .developer-photo img {
+                width: 120px !important;
+                height: 120px !important;
+            }
+
+            .footer {
+                text-align: center;
+            }
+
+            .footer .text-right {
+                text-align: center !important;
+                margin-top: 10px;
+            }
+        }
+    </style>
 @endpush
 
 @push('scripts')
-<script>
-    $(document).ready(function() {
-        // Tambahkan efek hover pada tombol sosial media
-        $('.developer-social .btn').hover(
-            function() {
-                $(this).css('transform', 'translateY(-3px)');
-            },
-            function() {
-                $(this).css('transform', 'translateY(0)');
-            }
-        );
-    });
-</script>
+    <script>
+        $(document).ready(function() {
+            // Tambahkan efek hover pada tombol sosial media
+            $('.developer-social .btn').hover(
+                function() {
+                    $(this).css('transform', 'translateY(-3px)');
+                },
+                function() {
+                    $(this).css('transform', 'translateY(0)');
+                }
+            );
+
+            // Animasi untuk tombol footer
+            $('.footer .btn-sm').hover(
+                function() {
+                    $(this).css('transform', 'scale(1.1)');
+                },
+                function() {
+                    $(this).css('transform', 'scale(1)');
+                }
+            );
+        });
+    </script>
 @endpush
