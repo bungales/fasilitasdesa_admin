@@ -1,15 +1,17 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\WargaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FasilitasController;
 use App\Http\Controllers\FasilitasUmumController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PembayaranFasilitasController;
 use App\Http\Controllers\PeminjamanFasilitasController;
+use App\Http\Controllers\PetugasFasilitasController;
+use App\Http\Controllers\SyaratFasilitasController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\WargaController;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('pages.login');
@@ -27,36 +29,41 @@ Route::get('/logout', [LoginController::class, 'destroy'])->name('login.destroy'
 Route::get('/fasilitas', [FasilitasController::class, 'index']);
 
 // ============== TAMBAHAN ROUTE UNTUK CREATE USER ==============
-// Route untuk halaman tambah user (register) - bisa diakses tanpa login jika mau
 Route::get('/register', function () {
-    return view('pages.register'); // Akan kita buat view ini
+    return view('pages.register');
 })->name('register.index');
-
-// Atau gunakan controller jika sudah ada
 Route::get('/user/create', [UserController::class, 'create'])->name('user.create');
 Route::post('/user', [UserController::class, 'store'])->name('user.store');
 // ==============================================================
 
 // Route yang memerlukan login (dilindungi dengan middleware)
 // Route::group(['middleware' => ['checkislogin']], function () {
-    // Dashboard
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+// Dashboard
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 
-    // Resource routes yang memerlukan login
-    Route::resource('warga', WargaController::class);
-    Route::resource('fasilitasumum', FasilitasUmumController::class);
-    Route::resource('user', UserController::class); // SEMUA USER BISA AKSES
-    Route::resource('peminjaman', PeminjamanFasilitasController::class);
-    Route::resource('pembayaran', PembayaranFasilitasController::class);
+// Resource routes yang memerlukan login
+Route::resource('warga', WargaController::class);
+Route::resource('fasilitasumum', FasilitasUmumController::class);
+Route::resource('user', UserController::class);                          // SEMUA USER BISA AKSES
+Route::resource('petugas-fasilitas', PetugasFasilitasController::class); // Juga bisa ditempatkan di sini
 
-    // Route untuk menghapus file media
-    Route::delete('/fasilitasumum/{fasilitasId}/media/{mediaId}', [FasilitasUmumController::class, 'deleteMedia'])
-        ->name('fasilitasumum.deleteMedia');
+Route::resource('syarat-fasilitas', SyaratFasilitasController::class);
+Route::get('/api/syarat-fasilitas/{fasilitas_id}', [SyaratFasilitasController::class, 'getByFasilitas']);
 
+Route::resource('petugas-fasilitas', PetugasFasilitasController::class);
+Route::get('/petugas-fasilitas/fasilitas/{fasilitas_id}', [PetugasFasilitasController::class, 'byFasilitas'])->name('petugas-fasilitas.byFasilitas');
+Route::get('/petugas-fasilitas/warga/{warga_id}', [PetugasFasilitasController::class, 'byWarga'])->name('petugas-fasilitas.byWarga');
 
-    // KOMEN kalau mau bisa akses semua
-    // Route::group(['middleware' => ['checkrole:Super Admin']], function () {
-    //     Route::resource('user', UserController::class);
-    // });
+Route::resource('peminjaman', PeminjamanFasilitasController::class);
+Route::resource('pembayaran', PembayaranFasilitasController::class);
+
+// Route untuk menghapus file media
+Route::delete('/fasilitasumum/{fasilitasId}/media/{mediaId}', [FasilitasUmumController::class, 'deleteMedia'])
+    ->name('fasilitasumum.deleteMedia');
+
+// KOMEN kalau mau bisa akses semua
+// Route::group(['middleware' => ['checkrole:Super Admin']], function () {
+//     Route::resource('user', UserController::class);
+// });
 
 // });

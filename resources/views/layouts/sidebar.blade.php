@@ -1,7 +1,6 @@
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
     <ul class="nav">
 
-
         <!-- Dashboard -->
         <li class="nav-item">
             <a class="nav-link {{ request()->routeIs('dashboard.index') ? 'active' : '' }}"
@@ -50,7 +49,7 @@
             </div>
         </li>
 
-        <!-- Pembayaran Fasilitas -->
+         <!-- Pembayaran Fasilitas -->
         <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#pembayaran-fasilitas">
                 <i class="fa-solid fa-money-bill-wave menu-icon"></i>
@@ -64,6 +63,44 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('pembayaran.create') }}">Tambah Data</a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+
+        <!-- Syarat Fasilitas -->
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#syarat-fasilitas">
+                <i class="fa-solid fa-clipboard-list menu-icon"></i>
+                <span class="menu-title">Syarat Fasilitas</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="syarat-fasilitas">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('syarat-fasilitas.index') }}">Lihat Data</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('syarat-fasilitas.create') }}">Tambah Data</a>
+                    </li>
+                </ul>
+            </div>
+        </li>
+
+        <!-- Petugas Fasilitas -->
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#petugas-fasilitas">
+                <i class="fa-solid fa-user-tie menu-icon"></i>
+                <span class="menu-title">Petugas Fasilitas</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse" id="petugas-fasilitas">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('petugas-fasilitas.index') }}">Lihat Data</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('petugas-fasilitas.create') }}">Tambah Data</a>
                     </li>
                 </ul>
             </div>

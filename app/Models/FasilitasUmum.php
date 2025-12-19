@@ -21,5 +21,23 @@ class FasilitasUmum extends Model
         'kapasitas',
         'deskripsi',
     ];
-}
 
+    // Relasi ke PetugasFasilitas
+    public function petugas()
+    {
+        return $this->hasMany(PetugasFasilitas::class, 'fasilitas_id', 'fasilitas_id');
+    }
+
+    // Relasi ke Warga melalui petugas
+    public function petugasWarga()
+    {
+        return $this->hasManyThrough(
+            Warga::class,
+            PetugasFasilitas::class,
+            'fasilitas_id', // Foreign key pada tabel petugas_fasilitas
+            'warga_id',     // Foreign key pada tabel warga
+            'fasilitas_id', // Local key pada tabel fasilitas_umum
+            'petugas_warga_id' // Local key pada tabel petugas_fasilitas
+        );
+    }
+}
