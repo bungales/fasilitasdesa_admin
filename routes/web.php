@@ -36,6 +36,15 @@ Route::get('/user/create', [UserController::class, 'create'])->name('user.create
 Route::post('/user', [UserController::class, 'store'])->name('user.store');
 // ==============================================================
 
+// ============== ROUTE SYARAT FASILITAS ==============
+Route::resource('syarat-fasilitas', SyaratFasilitasController::class);
+
+Route::get(
+    '/syarat-fasilitas/{id}/download',
+    [SyaratFasilitasController::class, 'downloadDokumen']
+)->name('syarat-fasilitas.download');
+// ====================================================
+
 // Route yang memerlukan login (dilindungi dengan middleware)
 // Route::group(['middleware' => ['checkislogin']], function () {
 // Dashboard
@@ -44,15 +53,17 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard
 // Resource routes yang memerlukan login
 Route::resource('warga', WargaController::class);
 Route::resource('fasilitasumum', FasilitasUmumController::class);
-Route::resource('user', UserController::class);                          // SEMUA USER BISA AKSES
-Route::resource('petugas-fasilitas', PetugasFasilitasController::class); // Juga bisa ditempatkan di sini
+Route::resource('user', UserController::class);
+Route::resource('petugas-fasilitas', PetugasFasilitasController::class);
 
+// Syarat Fasilitas Routes (jika ingin di dalam middleware)
 Route::resource('syarat-fasilitas', SyaratFasilitasController::class);
 Route::get('/api/syarat-fasilitas/{fasilitas_id}', [SyaratFasilitasController::class, 'getByFasilitas']);
 
-Route::resource('petugas-fasilitas', PetugasFasilitasController::class);
-Route::get('/petugas-fasilitas/fasilitas/{fasilitas_id}', [PetugasFasilitasController::class, 'byFasilitas'])->name('petugas-fasilitas.byFasilitas');
-Route::get('/petugas-fasilitas/warga/{warga_id}', [PetugasFasilitasController::class, 'byWarga'])->name('petugas-fasilitas.byWarga');
+Route::get('/petugas-fasilitas/fasilitas/{fasilitas_id}', [PetugasFasilitasController::class, 'byFasilitas'])
+    ->name('petugas-fasilitas.byFasilitas');
+Route::get('/petugas-fasilitas/warga/{warga_id}', [PetugasFasilitasController::class, 'byWarga'])
+    ->name('petugas-fasilitas.byWarga');
 
 Route::resource('peminjaman', PeminjamanFasilitasController::class);
 Route::resource('pembayaran', PembayaranFasilitasController::class);
