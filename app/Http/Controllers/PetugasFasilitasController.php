@@ -9,23 +9,45 @@ use Illuminate\Http\Request;
 
 class PetugasFasilitasController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        $petugasFasilitas = PetugasFasilitas::with(['warga', 'fasilitas'])->get();
-        return response()->json($petugasFasilitas);
+        $query = PetugasFasilitas::with(['warga', 'fasilitas']);
+
+        // Search hanya berdasarkan nama warga
+        if ($request->filled('search')) {
+            $query->whereHas('warga', function ($w) use ($request) {
+                $w->where('nama', 'like', '%' . $request->search . '%');
+            });
+        }
+
+        // ORDER BY petugas_id sesuai struktur
+        $petugasFasilitas = $query->orderBy('petugas_id', 'desc')->paginate(10);
+
+        // Ambil semua fasilitas untuk dropdown
+        $fasilitasList = FasilitasUmum::orderBy('nama')->get();
+
+        return view(
+            'pages.petugasfasilitas.index',
+            compact('petugasFasilitas', 'fasilitasList')
+        );
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+    public function create()
+    {
+        $fasilitasList = FasilitasUmum::orderBy('nama')->get();
+        $wargaList = Warga::orderBy('nama')->get();
+
+        return view(
+            'pages.petugasfasilitas.create',
+            compact('fasilitasList', 'wargaList')
+        );
+    }
+
     public function store(Request $request)
     {
         $request->validate([
-            'fasilitas_id' => 'required|integer|exists:fasilitas_umum,fasilitas_id',
-            'petugas_warga_id' => 'required|integer|exists:warga,warga_id',
+            'fasilitas_id' => 'required|exists:fasilitas_umum,fasilitas_id',
+            'petugas_warga_id' => 'required|exists:warga,warga_id',
             'peran' => 'required|string|max:100',
         ]);
 
@@ -35,87 +57,101 @@ class PetugasFasilitasController extends Controller
             ->exists();
 
         if ($existing) {
-            return response()->json([
-                'message' => 'Warga ini sudah menjadi petugas di fasilitas ini'
-            ], 422);
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Warga ini sudah menjadi petugas di fasilitas ini');
         }
 
-        $petugasFasilitas = PetugasFasilitas::create($request->all());
-        return response()->json($petugasFasilitas, 201);
+        // Cek jika peran Penanggung jawab
+        if ($request->peran == 'Penanggung jawab') {
+            $isPenanggungJawabLain = PetugasFasilitas::where('petugas_warga_id', $request->petugas_warga_id)
+                ->where('peran', 'Penanggung jawab')
+                ->exists();
+
+            if ($isPenanggungJawabLain) {
+                return redirect()
+                    ->back()
+                    ->withInput()
+                    ->with('warning', 'Warga ini sudah menjadi Penanggung jawab di fasilitas lain');
+            }
+        }
+
+        PetugasFasilitas::create($request->all());
+
+        return redirect()
+            ->route('petugas-fasilitas.index')
+            ->with('success', 'Petugas fasilitas berhasil ditambahkan');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show($id)
+    public function edit($id)
     {
-        $petugasFasilitas = PetugasFasilitas::with(['warga', 'fasilitas'])->findOrFail($id);
-        return response()->json($petugasFasilitas);
+        $petugasFasilitas = PetugasFasilitas::findOrFail($id);
+        $fasilitasList = FasilitasUmum::orderBy('nama')->get();
+        $wargaList = Warga::orderBy('nama')->get();
+
+        return view(
+            'pages.petugasfasilitas.edit',
+            compact('petugasFasilitas', 'fasilitasList', 'wargaList')
+        );
     }
 
-    /**
-     * Display petugas by fasilitas_id
-     */
-    public function byFasilitas($fasilitas_id)
-    {
-        $petugas = PetugasFasilitas::with('warga')
-            ->where('fasilitas_id', $fasilitas_id)
-            ->get();
-        return response()->json($petugas);
-    }
-
-    /**
-     * Display fasilitas by warga_id
-     */
-    public function byWarga($warga_id)
-    {
-        $fasilitas = PetugasFasilitas::with('fasilitas')
-            ->where('petugas_warga_id', $warga_id)
-            ->get();
-        return response()->json($fasilitas);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, $id)
     {
         $petugasFasilitas = PetugasFasilitas::findOrFail($id);
 
         $request->validate([
-            'fasilitas_id' => 'integer|exists:fasilitas_umum,fasilitas_id',
-            'petugas_warga_id' => 'integer|exists:warga,warga_id',
-            'peran' => 'string|max:100',
+            'fasilitas_id' => 'required|exists:fasilitas_umum,fasilitas_id',
+            'petugas_warga_id' => 'required|exists:warga,warga_id',
+            'peran' => 'required|string|max:100',
         ]);
 
-        // Cek duplikasi jika ada perubahan fasilitas atau warga
-        if ($request->has('fasilitas_id') || $request->has('petugas_warga_id')) {
-            $fasilitas_id = $request->fasilitas_id ?? $petugasFasilitas->fasilitas_id;
-            $warga_id = $request->petugas_warga_id ?? $petugasFasilitas->petugas_warga_id;
+        // Cek duplikasi
+        if ($request->fasilitas_id != $petugasFasilitas->fasilitas_id ||
+            $request->petugas_warga_id != $petugasFasilitas->petugas_warga_id) {
 
-            $existing = PetugasFasilitas::where('fasilitas_id', $fasilitas_id)
-                ->where('petugas_warga_id', $warga_id)
-                ->where('id', '!=', $id)
+            $existing = PetugasFasilitas::where('fasilitas_id', $request->fasilitas_id)
+                ->where('petugas_warga_id', $request->petugas_warga_id)
+                ->where('petugas_id', '!=', $id)
                 ->exists();
 
             if ($existing) {
-                return response()->json([
-                    'message' => 'Warga ini sudah menjadi petugas di fasilitas ini'
-                ], 422);
+                return redirect()
+                    ->back()
+                    ->withInput()
+                    ->with('error', 'Warga ini sudah menjadi petugas di fasilitas ini');
+            }
+        }
+
+        // Cek jika peran diubah menjadi Penanggung jawab
+        if ($request->peran == 'Penanggung jawab' && $petugasFasilitas->peran != 'Penanggung jawab') {
+            $isPenanggungJawabLain = PetugasFasilitas::where('petugas_warga_id', $request->petugas_warga_id)
+                ->where('peran', 'Penanggung jawab')
+                ->where('petugas_id', '!=', $id)
+                ->exists();
+
+            if ($isPenanggungJawabLain) {
+                return redirect()
+                    ->back()
+                    ->withInput()
+                    ->with('warning', 'Warga ini sudah menjadi Penanggung jawab di fasilitas lain');
             }
         }
 
         $petugasFasilitas->update($request->all());
-        return response()->json($petugasFasilitas);
+
+        return redirect()
+            ->route('petugas-fasilitas.index')
+            ->with('success', 'Petugas fasilitas berhasil diperbarui');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy($id)
     {
         $petugasFasilitas = PetugasFasilitas::findOrFail($id);
         $petugasFasilitas->delete();
-        return response()->json(['message' => 'Petugas berhasil dihapus'], 200);
+
+        return redirect()
+            ->route('petugas-fasilitas.index')
+            ->with('success', 'Petugas fasilitas berhasil dihapus');
     }
 }

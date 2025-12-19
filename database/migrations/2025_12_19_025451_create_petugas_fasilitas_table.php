@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('petugas_fasilitas', function (Blueprint $table) {
-            $table->id(); // Primary key auto increment
-            $table->unsignedBigInteger('fasilitas_id'); // FK ke fasilitas_umum
-            $table->unsignedInteger('petugas_warga_id'); // FK ke warga
+            $table->id('petugas_id'); // INI YANG PENTING: pakai id('petugas_id')
+            $table->unsignedBigInteger('fasilitas_id');
+            $table->unsignedInteger('petugas_warga_id');
             $table->string('peran');
             $table->timestamps();
 
@@ -30,7 +30,7 @@ return new class extends Migration
                   ->on('warga')
                   ->onDelete('cascade');
 
-            // Unique constraint agar satu warga tidak jadi petugas dua kali di fasilitas yang sama
+            // Unique constraint
             $table->unique(['fasilitas_id', 'petugas_warga_id']);
         });
     }

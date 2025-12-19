@@ -10,7 +10,9 @@ class PetugasFasilitas extends Model
     use HasFactory;
 
     protected $table = 'petugas_fasilitas';
-    protected $primaryKey = 'id';
+    protected $primaryKey = 'petugas_id';
+    public $incrementing = true;
+    protected $keyType = 'int';
 
     protected $fillable = [
         'fasilitas_id',

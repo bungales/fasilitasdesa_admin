@@ -36,14 +36,7 @@ Route::get('/user/create', [UserController::class, 'create'])->name('user.create
 Route::post('/user', [UserController::class, 'store'])->name('user.store');
 // ==============================================================
 
-// ============== ROUTE SYARAT FASILITAS ==============
-Route::resource('syarat-fasilitas', SyaratFasilitasController::class);
 
-Route::get(
-    '/syarat-fasilitas/{id}/download',
-    [SyaratFasilitasController::class, 'downloadDokumen']
-)->name('syarat-fasilitas.download');
-// ====================================================
 
 // Route yang memerlukan login (dilindungi dengan middleware)
 // Route::group(['middleware' => ['checkislogin']], function () {
@@ -58,7 +51,12 @@ Route::resource('petugas-fasilitas', PetugasFasilitasController::class);
 
 // Syarat Fasilitas Routes (jika ingin di dalam middleware)
 Route::resource('syarat-fasilitas', SyaratFasilitasController::class);
-Route::get('/api/syarat-fasilitas/{fasilitas_id}', [SyaratFasilitasController::class, 'getByFasilitas']);
+Route::resource('syarat-fasilitas', SyaratFasilitasController::class);
+
+Route::get(
+    '/syarat-fasilitas/{id}/download',
+    [SyaratFasilitasController::class, 'downloadDokumen']
+)->name('syarat-fasilitas.download');
 
 Route::get('/petugas-fasilitas/fasilitas/{fasilitas_id}', [PetugasFasilitasController::class, 'byFasilitas'])
     ->name('petugas-fasilitas.byFasilitas');
