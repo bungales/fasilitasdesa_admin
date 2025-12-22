@@ -11,6 +11,7 @@ use App\Http\Controllers\PetugasFasilitasController;
 use App\Http\Controllers\SyaratFasilitasController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WargaController;
+use App\Http\Controllers\MediaController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -69,6 +70,22 @@ Route::resource('pembayaran', PembayaranFasilitasController::class);
 // Route untuk menghapus file media
 Route::delete('/fasilitasumum/{fasilitasId}/media/{mediaId}', [FasilitasUmumController::class, 'deleteMedia'])
     ->name('fasilitasumum.deleteMedia');
+
+// ============== ROUTE BARU UNTUK MEDIA PEMBAYARAN ==============
+// Route untuk menghapus media pada pembayaran fasilitas
+Route::delete('/pembayaran/{bayarId}/media/{mediaId}', [PembayaranFasilitasController::class, 'deleteMedia'])
+    ->name('pembayaran.deleteMedia');
+
+// Route khusus untuk upload media dari halaman detail pembayaran
+Route::post('/pembayaran/{id}/upload-media', [PembayaranFasilitasController::class, 'uploadMedia'])
+    ->name('pembayaran.uploadMedia');
+
+// Route untuk media controller (untuk upload umum)
+Route::resource('media', MediaController::class);
+Route::post('/media/upload-ajax', [MediaController::class, 'uploadAjax'])->name('media.uploadAjax');
+Route::post('/media/reorder', [MediaController::class, 'reorder'])->name('media.reorder');
+Route::get('/media/by-reference/{refTable}/{refId}', [MediaController::class, 'getByReference'])->name('media.byReference');
+// ==============================================================
 
 // KOMEN kalau mau bisa akses semua
 // Route::group(['middleware' => ['checkrole:Super Admin']], function () {

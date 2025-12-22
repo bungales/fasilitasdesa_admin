@@ -4,13 +4,13 @@
     <!-- Konten Utama -->
     <div class="main-panel">
         <div class="content-wrapper">
+            <!-- Header Welcome -->
             <div class="row">
                 <div class="col-md-12 grid-margin">
                     <div class="row">
                         <div class="col-12 col-xl-8 mb-4 mb-xl-0">
                             <h3 class="font-weight-bold">Selamat Datang Bunga Lestari</h3>
-                            <h6 class="font-weight-normal mb-0">Selamat Datang di Projek bina desa saya fasilitas
-                                desa
+                            <h6 class="font-weight-normal mb-0">Selamat Datang di Projek bina desa saya fasilitas desa
                                 <span class="text-primary"> fasilitas umum admin!</span>
                             </h6>
                         </div>
@@ -20,7 +20,7 @@
                                     <button class="btn btn-sm btn-light bg-white dropdown-toggle" type="button"
                                         id="dropdownMenuDate2" data-toggle="dropdown" aria-haspopup="true"
                                         aria-expanded="true">
-                                        <i class="mdi mdi-calendar"></i> Hari Ini ({{ date('d M Y') }})
+                                        <i class="mdi mdi-calendar"></i> Hari Ini (22 Dec 2035)
                                     </button>
                                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuDate2">
                                         <a class="dropdown-item" href="#">Januari - Maret</a>
@@ -37,7 +37,10 @@
                     </div>
                 </div>
             </div>
+
+            <!-- ROW 1: People Card + Statistics Cards -->
             <div class="row">
+                <!-- People Card (Kiri) -->
                 <div class="col-md-6 grid-margin stretch-card">
                     <div class="card tale-bg">
                         <div class="card-people mt-auto">
@@ -45,8 +48,7 @@
                             <div class="weather-info">
                                 <div class="d-flex">
                                     <div>
-                                        <h2 class="mb-0 font-weight-normal"><i class="icon-sun mr-2"></i>31<sup>C</sup>
-                                        </h2>
+                                        <h2 class="mb-0 font-weight-normal"><i class="icon-sun mr-2"></i>31<sup>C</sup></h2>
                                     </div>
                                     <div class="ml-2">
                                         <h4 class="location font-weight-normal">INDONESIA</h4>
@@ -57,8 +59,11 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- 4 Statistics Cards (Kanan) -->
                 <div class="col-md-6 grid-margin transparent">
                     <div class="row">
+                        <!-- Pemesanan Hari Ini -->
                         <div class="col-md-6 mb-4 stretch-card transparent">
                             <div class="card card-tale">
                                 <div class="card-body">
@@ -68,18 +73,9 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Jumlah Rapat -->
                         <div class="col-md-6 mb-4 stretch-card transparent">
-                            <div class="card card-dark-blue">
-                                <div class="card-body">
-                                    <p class="mb-4">Total Pemesanan</p>
-                                    <p class="fs-30 mb-2">61344</p>
-                                    <p>22.00% (30 hari)</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-4 mb-lg-0 stretch-card transparent">
                             <div class="card card-light-blue">
                                 <div class="card-body">
                                     <p class="mb-4">Jumlah Rapat</p>
@@ -88,6 +84,21 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+
+                    <div class="row">
+                        <!-- Total Pemesanan -->
+                        <div class="col-md-6 mb-4 mb-lg-0 stretch-card transparent">
+                            <div class="card card-dark-blue">
+                                <div class="card-body">
+                                    <p class="mb-4">Total Pemesanan</p>
+                                    <p class="fs-30 mb-2">61344</p>
+                                    <p>25.00% (30 hari)</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Jumlah Klien -->
                         <div class="col-md-6 stretch-card transparent">
                             <div class="card card-light-danger">
                                 <div class="card-body">
@@ -102,7 +113,303 @@
             </div>
 
             <!-- ======================= -->
-            <!-- SLIDESHOW GAMBAR INDONESIA - DENGAN JUDUL -->
+            <!-- DATA STATISTIK UTAMA -->
+            <!-- ======================= -->
+            <div class="row mt-4">
+                <!-- Total Users -->
+                <div class="col-md-3 grid-margin stretch-card">
+                    <div class="card card-tale">
+                        <div class="card-body">
+                            <p class="mb-4">Total Users</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h2 class="mb-0">{{ App\Models\User::count() ?? 102 }}</h2>
+                                <i class="mdi mdi-account-multiple icon-lg"></i>
+                            </div>
+                            <div class="mt-3">
+                                <small class="text-light">Total 5 Run return tensed/s</small>
+                                <div class="progress">
+                                    <div class="progress-bar bg-white" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Total Warga -->
+                <div class="col-md-3 grid-margin stretch-card">
+                    <div class="card card-dark-blue">
+                        <div class="card-body">
+                            <p class="mb-4">Total Warga</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h2 class="mb-0">{{ App\Models\Warga::count() ?? 100 }}</h2>
+                                <i class="mdi mdi-home icon-lg"></i>
+                            </div>
+                            <div class="mt-3">
+                                <small class="text-light">Total Warga Terdaftar</small>
+                                <div class="progress">
+                                    <div class="progress-bar bg-white" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fasilitas Umum -->
+                <div class="col-md-3 grid-margin stretch-card">
+                    <div class="card card-light-blue">
+                        <div class="card-body">
+                            <p class="mb-4">Fasilitas Umum</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h2 class="mb-0">{{ App\Models\FasilitasUmum::count() ?? 100 }}</h2>
+                                <i class="mdi mdi-office-building icon-lg"></i>
+                            </div>
+                            <div class="mt-3">
+                                <small class="text-light">Fasilitas Tersedia</small>
+                                <div class="progress">
+                                    <div class="progress-bar bg-white" role="progressbar" style="width: 45%" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Total Program -->
+                <div class="col-md-3 grid-margin stretch-card">
+                    <div class="card card-light-danger">
+                        <div class="card-body">
+                            <p class="mb-4">Total Program</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <h2 class="mb-0">100</h2>
+                                <i class="mdi mdi-file-document icon-lg"></i>
+                            </div>
+                            <div class="mt-3">
+                                <small class="text-light">Program Aktif</small>
+                                <div class="progress">
+                                    <div class="progress-bar bg-white" role="progressbar" style="width: 85%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ======================= -->
+            <!-- FITUR UTAMA & MASTER DATA -->
+            <!-- ======================= -->
+            <div class="row mt-4">
+                <!-- FITUR UTAMA -->
+                <div class="col-md-6">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-header bg-gradient-primary text-white">
+                            <h4 class="mb-0">
+                                <i class="mdi mdi-star-circle mr-2"></i> Fitur Utama
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                @php
+                                    $features = [
+                                        [
+                                            'icon' => 'mdi mdi-home-city',
+                                            'title' => 'Fasilitas Umum',
+                                            'description' => 'Kelola fasilitas desa',
+                                            'color' => 'primary',
+                                            'count' => App\Models\FasilitasUmum::count() ?? 100,
+                                            'route' => 'fasilitasumum.index'
+                                        ],
+                                        [
+                                            'icon' => 'mdi mdi-calendar-clock',
+                                            'title' => 'Peminjaman Fasilitas',
+                                            'description' => 'Kelola peminjaman',
+                                            'color' => 'success',
+                                            'count' => App\Models\PeminjamanFasilitas::count() ?? 100,
+                                            'route' => 'peminjaman.index'
+                                        ],
+                                        [
+                                            'icon' => 'mdi mdi-cash-multiple',
+                                            'title' => 'Pembayaran Fasilitas',
+                                            'description' => 'Kelola pembayaran',
+                                            'color' => 'info',
+                                            'count' => App\Models\PembayaranFasilitas::count() ?? 0,
+                                            'route' => 'pembayaran.index'
+                                        ],
+                                        [
+                                            'icon' => 'mdi mdi-file-document',
+                                            'title' => 'Syarat Fasilitas',
+                                            'description' => 'Kelola persyaratan',
+                                            'color' => 'warning',
+                                            'count' => App\Models\SyaratFasilitas::count() ?? 0,
+                                            'route' => 'syarat-fasilitas.index'
+                                        ],
+                                        [
+                                            'icon' => 'mdi mdi-account-tie',
+                                            'title' => 'Petugas Fasilitas',
+                                            'description' => 'Kelola petugas',
+                                            'color' => 'danger',
+                                            'count' => App\Models\PetugasFasilitas::count() ?? 0,
+                                            'route' => 'petugas-fasilitas.index'
+                                        ]
+                                    ];
+                                @endphp
+
+                                @foreach($features as $feature)
+                                <div class="col-12 mb-3">
+                                    <a href="{{ route($feature['route']) }}" class="text-decoration-none">
+                                        <div class="card border-left-{{ $feature['color'] }} border-left-3 h-100">
+                                            <div class="card-body py-3">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="icon-circle bg-{{ $feature['color'] }} text-white mr-3">
+                                                            <i class="{{ $feature['icon'] }}"></i>
+                                                        </div>
+                                                        <div>
+                                                            <h6 class="font-weight-bold mb-0">{{ $feature['title'] }}</h6>
+                                                            <small class="text-muted">{{ $feature['description'] }}</small>
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-right">
+                                                        <span class="badge badge-{{ $feature['color'] }} badge-pill px-3 py-2">
+                                                            {{ $feature['count'] }}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        <div class="card-footer bg-light">
+                            <small class="text-muted">
+                                <i class="mdi mdi-information mr-1"></i> Total {{ count($features) }} fitur utama tersedia
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MASTER DATA -->
+                <div class="col-md-6">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-header bg-gradient-success text-white">
+                            <h4 class="mb-0">
+                                <i class="mdi mdi-database mr-2"></i> Master Data
+                            </h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <!-- Data Warga -->
+                                <div class="col-12 mb-3">
+                                    <a href="{{ route('warga.index') }}" class="text-decoration-none">
+                                        <div class="card border-left-info border-left-3 h-100">
+                                            <div class="card-body py-3">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="icon-circle bg-info text-white mr-3">
+                                                            <i class="mdi mdi-account-group"></i>
+                                                        </div>
+                                                        <div>
+                                                            <h6 class="font-weight-bold mb-0">Data Warga</h6>
+                                                            <small class="text-muted">Kelola data penduduk desa</small>
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-right">
+                                                        <span class="badge badge-info badge-pill px-3 py-2">
+                                                            {{ App\Models\Warga::count() ?? 100 }}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <!-- Data User -->
+                                <div class="col-12 mb-3">
+                                    <a href="{{ route('user.index') }}" class="text-decoration-none">
+                                        <div class="card border-left-primary border-left-3 h-100">
+                                            <div class="card-body py-3">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="icon-circle bg-primary text-white mr-3">
+                                                            <i class="mdi mdi-account-cog"></i>
+                                                        </div>
+                                                        <div>
+                                                            <h6 class="font-weight-bold mb-0">User</h6>
+                                                            <small class="text-muted">Kelola pengguna sistem</small>
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-right">
+                                                        <div class="d-flex align-items-center">
+                                                            <div class="mr-3 text-right">
+                                                                <div class="h4 mb-0">{{ App\Models\User::count() ?? 102 }}</div>
+                                                                <small class="text-muted">Total</small>
+                                                            </div>
+                                                            <div class="text-right">
+                                                                <div class="h4 mb-0">{{ App\Models\User::where('role', 'Administrator')->count() ?? 0 }}</div>
+                                                                <small class="text-muted">Administrator</small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- User Statistics Row -->
+                                                <div class="row mt-3">
+                                                    <div class="col-4 text-center">
+                                                        <div class="stat-box bg-danger-light">
+                                                            <div class="h6 mb-0">{{ App\Models\User::where('role', 'Super Admin')->count() ?? 0 }}</div>
+                                                            <small class="text-muted">Super Admin</small>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-4 text-center">
+                                                        <div class="stat-box bg-warning-light">
+                                                            <div class="h6 mb-0">{{ App\Models\User::where('role', 'Administrator')->count() ?? 0 }}</div>
+                                                            <small class="text-muted">Administrator</small>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-4 text-center">
+                                                        <div class="stat-box bg-success-light">
+                                                            <div class="h6 mb-0">{{ App\Models\User::where('role', 'Pelanggan')->count() ?? 0 }}</div>
+                                                            <small class="text-muted">Pelanggan</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <!-- Data Master Lainnya -->
+                                <div class="col-12">
+                                    <div class="card border-left-secondary border-left-3">
+                                        <div class="card-body py-3">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <h6 class="font-weight-bold mb-0">Total Master Data</h6>
+                                                    <small class="text-muted">2 master data tersedia</small>
+                                                </div>
+                                                <div class="text-right">
+                                                    <span class="badge badge-secondary badge-pill px-3 py-2">
+                                                        2
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-light">
+                            <small class="text-muted">
+                                <i class="mdi mdi-information mr-1"></i> Total 2 master data tersedia
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ======================= -->
+            <!-- SLIDESHOW GAMBAR INDONESIA -->
             <!-- ======================= -->
             <div class="row mt-4">
                 <div class="col-md-12">
@@ -225,7 +532,7 @@
                                         </span>
                                         <span class="info-divider">•</span>
                                         <span class="info-item">
-                                            <i class="mdi mdi-responsive mr-1"></i> 
+                                            <i class="mdi mdi-responsive mr-1"></i>
                                         </span>
                                     </div>
                                 </div>
@@ -234,9 +541,6 @@
                     </div>
                 </div>
             </div>
-            <!-- ======================= -->
-            <!-- END SLIDESHOW -->
-            <!-- ======================= -->
 
             <!-- ======================= -->
             <!-- IDENTITAS PENGEMBANG -->
@@ -332,11 +636,9 @@
                     </div>
                 </div>
             </div>
-            <!-- ======================= -->
-            <!-- END IDENTITAS PENGEMBANG -->
-            <!-- ======================= -->
 
-            <div class="row">
+            <!-- Detail Pesanan & Laporan Penjualan -->
+            <div class="row mt-4">
                 <div class="col-md-6 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
@@ -420,13 +722,13 @@
                                             </a>
                                         </li>
                                         <li class="mb-2">
-                                            <a href="#" class="text-muted">
+                                            <a href="{{ route('fasilitasumum.index') }}" class="text-muted">
                                                 <i class="fas fa-building mr-2"></i>Fasilitas Umum
                                             </a>
                                         </li>
                                         <li class="mb-2">
-                                            <a href="#" class="text-muted">
-                                                <i class="fas fa-chart-bar mr-2"></i>Laporan
+                                            <a href="{{ route('user.index') }}" class="text-muted">
+                                                <i class="fas fa-user-cog mr-2"></i>User Management
                                             </a>
                                         </li>
                                         <li>
@@ -604,7 +906,197 @@
 
 @push('styles')
     <style>
-        /* Styling untuk header slideshow */
+        /* Layout yang lebih rapi untuk bagian atas */
+        .tale-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+            border-radius: 12px;
+            overflow: hidden;
+            height: 100%;
+        }
+
+        .card-people {
+            position: relative;
+            height: 100%;
+            min-height: 300px;
+        }
+
+        .card-people img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .weather-info {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            min-width: 180px;
+        }
+
+        .weather-info h2 {
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .weather-info .location {
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 0;
+        }
+
+        .weather-info h6 {
+            color: #6c757d;
+            margin-bottom: 0;
+        }
+
+        /* Statistics Cards Styling */
+        .grid-margin.transparent .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .grid-margin.transparent .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+
+        .card-tale {
+            background: linear-gradient(135deg, #FF9A9E 0%, #FAD0C4 100%);
+            color: white;
+        }
+
+        .card-dark-blue {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .card-light-blue {
+            background: linear-gradient(135deg, #4ECDC4 0%, #45B7D1 100%);
+            color: white;
+        }
+
+        .card-light-danger {
+            background: linear-gradient(135deg, #FF6B6B 0%, #EE5A24 100%);
+            color: white;
+        }
+
+        .fs-30 {
+            font-size: 30px;
+            font-weight: 700;
+        }
+
+        /* Fitur Utama & Master Data Styling */
+        .card-header.bg-gradient-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        }
+
+        .card-header.bg-gradient-success {
+            background: linear-gradient(135deg, #06D6A0 0%, #1DD1A1 100%) !important;
+        }
+
+        .icon-circle {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .border-left-primary { border-left-color: #667eea !important; }
+        .border-left-success { border-left-color: #06D6A0 !important; }
+        .border-left-info { border-left-color: #4ECDC4 !important; }
+        .border-left-warning { border-left-color: #FFD166 !important; }
+        .border-left-danger { border-left-color: #FF6B6B !important; }
+        .border-left-secondary { border-left-color: #6c757d !important; }
+
+        .bg-danger-light { background-color: rgba(255, 107, 107, 0.1) !important; }
+        .bg-warning-light { background-color: rgba(255, 209, 102, 0.1) !important; }
+        .bg-success-light { background-color: rgba(6, 214, 160, 0.1) !important; }
+
+        .stat-box {
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-box:hover {
+            background-color: rgba(0,0,0,0.05) !important;
+        }
+
+        /* Hover Effects */
+        .card.border-left-3 {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .card.border-left-3:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        /* Data Statistik Styling */
+        .grid-margin.stretch-card .card {
+            transition: all 0.3s ease;
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .grid-margin.stretch-card .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+
+        .grid-margin.stretch-card .card .progress {
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(255,255,255,0.3);
+        }
+
+        .grid-margin.stretch-card .card .progress-bar {
+            border-radius: 3px;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .weather-info {
+                min-width: 150px;
+                padding: 10px;
+            }
+
+            .weather-info h2 {
+                font-size: 1.5rem;
+            }
+
+            .fs-30 {
+                font-size: 24px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .card-people {
+                min-height: 200px;
+            }
+
+            .weather-info {
+                bottom: 10px;
+                left: 10px;
+            }
+        }
+
+        /* Styling untuk bagian lain yang sudah ada */
         .slideshow-header {
             background: #ffffff;
             padding: 20px;
@@ -632,7 +1124,7 @@
             background: linear-gradient(135deg, #007bff, #0056b3);
         }
 
-        /* Styling untuk carousel yang diperbaiki */
+        /* Carousel styling */
         .carousel {
             border-radius: 12px;
             overflow: hidden;
@@ -705,210 +1197,7 @@
             text-shadow: none;
         }
 
-        .caption-indicator {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 15px;
-        }
-
-        .indicator-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background-color: rgba(108, 117, 125, 0.3);
-            transition: all 0.3s ease;
-        }
-
-        .indicator-dot.active {
-            background-color: #007bff;
-            transform: scale(1.3);
-        }
-
-        /* Kontrol navigasi */
-        .carousel-control {
-            width: 60px;
-            height: 60px;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 50%;
-            top: 50%;
-            transform: translateY(-50%);
-            opacity: 0;
-            transition: all 0.3s ease;
-            margin: 0 20px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .carousel:hover .carousel-control {
-            opacity: 1;
-        }
-
-        .carousel-control-prev {
-            left: 10px;
-        }
-
-        .carousel-control-next {
-            right: 10px;
-        }
-
-        .carousel-control-icon {
-            color: #2c3e50;
-            font-size: 28px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-        }
-
-        /* Informasi slideshow */
-        .carousel-info {
-            position: absolute;
-            bottom: 15px;
-            left: 0;
-            right: 0;
-            z-index: 3;
-            padding: 0 20px;
-        }
-
-        .info-content {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 15px;
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(5px);
-            padding: 8px 20px;
-            border-radius: 20px;
-            margin: 0 auto;
-            max-width: 400px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .info-item {
-            color: #5a6c7d;
-            font-size: 0.85rem;
-            display: flex;
-            align-items: center;
-        }
-
-        .info-divider {
-            color: #adb5bd;
-        }
-
-        /* Indicator bawah */
-        .carousel-indicators {
-            bottom: 25px;
-            z-index: 3;
-        }
-
-        .carousel-indicators li {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background-color: rgba(255, 255, 255, 0.5);
-            border: 2px solid transparent;
-            transition: all 0.3s ease;
-        }
-
-        .carousel-indicators li.active {
-            background-color: #007bff;
-            border-color: white;
-            transform: scale(1.2);
-        }
-
-        /* Efek hover pada gambar */
-        .carousel-item img {
-            transition: transform 8s ease;
-        }
-
-        .carousel-item.active img {
-            transform: scale(1.05);
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .slideshow-header h3 {
-                font-size: 1.5rem;
-            }
-
-            .slideshow-header p {
-                font-size: 0.9rem;
-            }
-
-            .carousel-caption {
-                bottom: 50px;
-                width: 95%;
-            }
-
-            .caption-content {
-                padding: 20px;
-            }
-
-            .caption-title {
-                font-size: 1.5rem;
-            }
-
-            .caption-description {
-                font-size: 1rem;
-            }
-
-            .carousel-control {
-                width: 50px;
-                height: 50px;
-                margin: 0 10px;
-            }
-
-            .carousel-control-icon {
-                font-size: 24px;
-            }
-
-            .info-content {
-                flex-direction: column;
-                gap: 5px;
-                padding: 10px;
-            }
-
-            .info-divider {
-                display: none;
-            }
-        }
-
-        @media (max-width: 576px) {
-            .slideshow-header {
-                padding: 15px;
-                text-align: center;
-            }
-
-            .slideshow-header h3 {
-                font-size: 1.3rem;
-            }
-
-            .carousel-item img {
-                height: 300px !important;
-            }
-
-            .carousel-caption {
-                bottom: 40px;
-            }
-
-            .caption-content {
-                padding: 15px;
-            }
-
-            .caption-title {
-                font-size: 1.2rem;
-            }
-
-            .caption-description {
-                font-size: 0.9rem;
-            }
-
-            .carousel-info {
-                bottom: 10px;
-            }
-        }
-
-        /* Styling untuk bagian lain */
+        /* Developer styling */
         .developer-photo {
             transition: transform 0.3s ease;
         }
@@ -932,55 +1221,11 @@
             transform: translateY(-3px);
         }
 
-        .developer-info p {
-            margin-bottom: 8px;
-            color: #555;
-        }
-
-        .badge {
-            font-size: 0.75rem;
-            padding: 0.25rem 0.5rem;
-        }
-
-        .card-title {
-            color: #2c3e50;
-            font-weight: 600;
-        }
-
-        .project-info ul li {
-            display: inline-block;
-        }
-
-        /* Styling untuk footer dashboard */
+        /* Footer styling */
         .footer {
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             border-radius: 10px;
             box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
-        }
-
-        .footer h5 {
-            color: #2c3e50;
-            font-size: 1.1rem;
-        }
-
-        .footer a.text-muted:hover {
-            color: #007bff !important;
-            text-decoration: none;
-        }
-
-        .footer .contact-info p {
-            color: #6c757d;
-            font-size: 0.9rem;
-        }
-
-        .footer .btn-sm {
-            width: 36px;
-            height: 36px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0;
-            transition: transform 0.2s ease;
         }
 
         .footer .btn-sm:hover {
@@ -992,7 +1237,7 @@
 @push('scripts')
     <script>
         $(document).ready(function() {
-            // Inisialisasi carousel dengan interval 5 detik
+            // Inisialisasi carousel
             $('#indonesiaCarousel').carousel({
                 interval: 5000,
                 pause: 'hover',
@@ -1006,30 +1251,35 @@
                 $('.indicator-dot').eq(nextSlide).addClass('active');
             });
 
-            // Efek zoom pada gambar aktif
-            $('#indonesiaCarousel').on('slide.bs.carousel', function () {
-                $(this).find('.carousel-item.active img').css('transform', 'scale(1)');
-            }).on('slid.bs.carousel', function () {
-                $(this).find('.carousel-item.active img').css('transform', 'scale(1.05)');
-            });
-
-            // Efek hover pada tombol sosial media
-            $('.developer-social .btn').hover(
+            // Hover effect for feature cards
+            $('.card.border-left-3').hover(
                 function() {
-                    $(this).css('transform', 'translateY(-3px)');
+                    $(this).css({
+                        'transform': 'translateY(-3px)',
+                        'box-shadow': '0 10px 20px rgba(0,0,0,0.1)'
+                    });
                 },
                 function() {
-                    $(this).css('transform', 'translateY(0)');
+                    $(this).css({
+                        'transform': 'translateY(0)',
+                        'box-shadow': 'none'
+                    });
                 }
             );
 
-            // Animasi untuk tombol footer
-            $('.footer .btn-sm').hover(
+            // Hover effect for statistics cards
+            $('.grid-margin.transparent .card, .grid-margin.stretch-card .card').hover(
                 function() {
-                    $(this).css('transform', 'scale(1.1)');
+                    $(this).css({
+                        'transform': 'translateY(-5px)',
+                        'box-shadow': '0 10px 20px rgba(0,0,0,0.15)'
+                    });
                 },
                 function() {
-                    $(this).css('transform', 'scale(1)');
+                    $(this).css({
+                        'transform': 'translateY(0)',
+                        'box-shadow': '0 4px 6px rgba(0,0,0,0.1)'
+                    });
                 }
             );
         });
