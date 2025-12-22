@@ -49,7 +49,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
+            'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users',
             'password' => 'required|confirmed|min:6',
             'role' => 'required|in:' . implode(',', User::getRoles()),
@@ -74,6 +74,12 @@ class UserController extends Controller
         return redirect()->route('user.index')->with('success', 'User berhasil ditambahkan!');
     }
 
+    // ✅ TAMBAHKAN METHOD SHOW INI
+    public function show(User $user)
+    {
+        return view('pages.user.show', compact('user'));
+    }
+
     public function edit(User $user)
     {
         $roles = User::getRoles();
@@ -83,7 +89,7 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $request->validate([
-            'name' => 'required',
+            'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
             'role' => 'required|in:' . implode(',', User::getRoles()),
             'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
