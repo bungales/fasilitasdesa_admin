@@ -39,6 +39,13 @@ class SyaratFasilitasController extends Controller
         );
     }
 
+    public function show($id)
+    {
+        $syaratFasilitas = SyaratFasilitas::with('fasilitas')->findOrFail($id);
+
+        return view('pages.syaratfasilitas.show', compact('syaratFasilitas'));
+    }
+
     public function create()
     {
         $fasilitasList = FasilitasUmum::orderBy('nama')->get();
