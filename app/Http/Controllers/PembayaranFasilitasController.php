@@ -7,22 +7,22 @@ use App\Models\PeminjamanFasilitas;
 use App\Models\Media;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 class PembayaranFasilitasController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     */
     public function index(Request $request)
     {
-        // SEARCH
         $search = $request->search;
 
-        // FILTER METODE (opsional)
-        $filterMetode = $request->metode;
+        $query = PembayaranFasilitas::with([
+            'peminjaman.warga',
+            'peminjaman.fasilitas',
+            'media'
+        ]);
 
-        // Query dasar
-        $query = PembayaranFasilitas::with(['peminjaman.warga', 'peminjaman.fasilitas', 'media']);
-
-        // SEARCH
         if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->whereHas('peminjaman.warga', function ($w) use ($search) {
@@ -36,85 +36,75 @@ class PembayaranFasilitasController extends Controller
             });
         }
 
-        // FILTER METODE
-        if ($filterMetode) {
-            $query->where('metode', $filterMetode);
-        }
-
-        // PAGINATION
         $pembayaran = $query->orderBy('bayar_id', 'DESC')->paginate(10);
 
-        return view('pages.pembayaranfasilitas.index', compact(
-            'pembayaran',
-            'search',
-            'filterMetode'
-        ));
+        return view('pages.pembayaranfasilitas.index', compact('pembayaran', 'search'));
     }
 
+    /**
+     * Show the form for creating a new resource.
+     */
     public function create()
     {
-        $peminjaman = PeminjamanFasilitas::with('warga', 'fasilitas')->get();
+        $peminjaman = PeminjamanFasilitas::with(['warga', 'fasilitas'])
+            ->where('status', '!=', 'dibatalkan')
+            ->whereDoesntHave('pembayaran')
+            ->get();
+
         return view('pages.pembayaranfasilitas.create', compact('peminjaman'));
     }
 
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(Request $request)
     {
         $request->validate([
-            'pinjam_id' => 'required',
+            'pinjam_id' => 'required|exists:peminjaman_fasilitas,pinjam_id',
             'tanggal'   => 'required|date',
-            'jumlah'    => 'required|numeric',
-            'metode'    => 'required',
-            'keterangan' => 'nullable',
-            'files' => 'nullable|array',
-            'files.*' => 'file|mimes:jpg,jpeg,png,pdf',
-            'captions' => 'nullable|array',
-            'captions.*' => 'nullable|string|max:255'
+            'jumlah'    => 'required|numeric|min:0',
+            'metode'    => 'required|string',
+            'files.*'   => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'captions.*'=> 'nullable|string|max:255',
         ]);
 
-        // Simpan pembayaran
-        $pembayaran = PembayaranFasilitas::create($request->only([
-            'pinjam_id', 'tanggal', 'jumlah', 'metode', 'keterangan'
-        ]));
+        $pembayaran = PembayaranFasilitas::create([
+            'pinjam_id'  => $request->pinjam_id,
+            'tanggal'    => $request->tanggal,
+            'jumlah'     => $request->jumlah,
+            'metode'     => $request->metode,
+            'keterangan' => $request->keterangan,
+        ]);
 
-        // Upload media jika ada
         if ($request->hasFile('files')) {
-            $uploadPath = 'pembayaran_fasilitas';
-
-            // Buat folder jika belum ada
-            if (!Storage::disk('public')->exists($uploadPath)) {
-                Storage::disk('public')->makeDirectory($uploadPath);
-            }
-
-            $sortOrder = Media::where('ref_table', 'pembayaran_fasilitas')
-                             ->where('ref_id', $pembayaran->bayar_id)
-                             ->max('sort_order') ?? 0;
-
             foreach ($request->file('files') as $index => $file) {
-                if ($file->isValid()) {
-                    $originalName = $file->getClientOriginalName();
-                    $extension = $file->getClientOriginalExtension();
-                    $fileName = time() . '_' . Str::random(10) . '.' . $extension;
+                $fileName = time().'_'.uniqid().'.'.$file->getClientOriginalExtension();
+                $path = 'uploads/pembayaran_fasilitas/';
 
-                    // Simpan file ke storage public
-                    $file->storeAs($uploadPath, $fileName, 'public');
+                // Simpan file
+                $file->storeAs($path, $fileName, 'public');
 
-                    // Simpan ke database
-                    Media::create([
-                        'ref_table' => 'pembayaran_fasilitas',
-                        'ref_id' => $pembayaran->bayar_id,
-                        'file_name' => $fileName,
-                        'caption' => $request->captions[$index] ?? null,
-                        'mime_type' => $file->getMimeType(),
-                        'sort_order' => ++$sortOrder
-                    ]);
-                }
+                // SESUAIKAN dengan struktur Media Anda
+                Media::create([
+                    'ref_table'     => 'pembayaran_fasilitas',
+                    'ref_id'        => $pembayaran->bayar_id,
+                    'file_name'     => $fileName,
+                    'original_name' => $file->getClientOriginalName(),
+                    'mime_type'     => $file->getMimeType(),
+                    'size'          => $file->getSize(),
+                    'caption'       => $request->captions[$index] ?? null,
+                    'path'          => $path.$fileName,
+                ]);
             }
         }
 
         return redirect()->route('pembayaran.index')
-            ->with('success', 'Pembayaran berhasil ditambahkan!');
+            ->with('success', 'Pembayaran berhasil ditambahkan');
     }
 
+    /**
+     * Display the specified resource.
+     */
     public function show($id)
     {
         $pembayaran = PembayaranFasilitas::with([
@@ -126,166 +116,139 @@ class PembayaranFasilitasController extends Controller
         return view('pages.pembayaranfasilitas.show', compact('pembayaran'));
     }
 
-    public function edit(PembayaranFasilitas $pembayaran)
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit($id)
     {
-        $peminjaman = PeminjamanFasilitas::with('warga', 'fasilitas')->get();
-        $media = $pembayaran->media;
+        $pembayaran = PembayaranFasilitas::with('media')->findOrFail($id);
+        $peminjaman = PeminjamanFasilitas::with(['warga', 'fasilitas'])->get();
 
-        return view('pages.pembayaranfasilitas.edit', compact('pembayaran', 'peminjaman', 'media'));
+        return view('pages.pembayaranfasilitas.edit', compact('pembayaran', 'peminjaman'));
     }
 
+    /**
+     * Update the specified resource in storage.
+     */
     public function update(Request $request, $id)
     {
-        $pembayaran = PembayaranFasilitas::findOrFail($id);
-
         $request->validate([
-            'pinjam_id' => 'required',
+            'pinjam_id' => 'required|exists:peminjaman_fasilitas,pinjam_id',
             'tanggal'   => 'required|date',
-            'jumlah'    => 'required|numeric',
-            'metode'    => 'required',
-            'keterangan' => 'nullable',
-            'files' => 'nullable|array',
-            'files.*' => 'file|mimes:jpg,jpeg,png,pdf',
-            'captions' => 'nullable|array',
-            'captions.*' => 'nullable|string|max:255'
+            'jumlah'    => 'required|numeric|min:0',
+            'metode'    => 'required|string',
+            'files.*'   => 'nullable|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'captions.*'=> 'nullable|string|max:255',
         ]);
 
-        // Update data pembayaran
-        $pembayaran->update($request->only([
-            'pinjam_id', 'tanggal', 'jumlah', 'metode', 'keterangan'
-        ]));
+        $pembayaran = PembayaranFasilitas::findOrFail($id);
 
-        // Upload media baru jika ada
+        $pembayaran->update([
+            'pinjam_id'  => $request->pinjam_id,
+            'tanggal'    => $request->tanggal,
+            'jumlah'     => $request->jumlah,
+            'metode'     => $request->metode,
+            'keterangan' => $request->keterangan,
+        ]);
+
         if ($request->hasFile('files')) {
-            $uploadPath = 'pembayaran_fasilitas';
-
-            // Buat folder jika belum ada
-            if (!Storage::disk('public')->exists($uploadPath)) {
-                Storage::disk('public')->makeDirectory($uploadPath);
-            }
-
-            $sortOrder = Media::where('ref_table', 'pembayaran_fasilitas')
-                             ->where('ref_id', $pembayaran->bayar_id)
-                             ->max('sort_order') ?? 0;
-
             foreach ($request->file('files') as $index => $file) {
-                if ($file->isValid()) {
-                    $originalName = $file->getClientOriginalName();
-                    $extension = $file->getClientOriginalExtension();
-                    $fileName = time() . '_' . Str::random(10) . '.' . $extension;
+                $fileName = time().'_'.uniqid().'.'.$file->getClientOriginalExtension();
+                $path = 'uploads/pembayaran_fasilitas/';
 
-                    // Simpan file ke storage public
-                    $file->storeAs($uploadPath, $fileName, 'public');
+                // Simpan file
+                $file->storeAs($path, $fileName, 'public');
 
-                    // Simpan ke database
-                    Media::create([
-                        'ref_table' => 'pembayaran_fasilitas',
-                        'ref_id' => $pembayaran->bayar_id,
-                        'file_name' => $fileName,
-                        'caption' => $request->captions[$index] ?? null,
-                        'mime_type' => $file->getMimeType(),
-                        'sort_order' => ++$sortOrder
-                    ]);
-                }
+                Media::create([
+                    'ref_table'     => 'pembayaran_fasilitas',
+                    'ref_id'        => $pembayaran->bayar_id,
+                    'file_name'     => $fileName,
+                    'original_name' => $file->getClientOriginalName(),
+                    'mime_type'     => $file->getMimeType(),
+                    'size'          => $file->getSize(),
+                    'caption'       => $request->captions[$index] ?? null,
+                    'path'          => $path.$fileName,
+                ]);
             }
         }
 
-        return redirect()->route('pembayaran.show', $pembayaran->bayar_id)
-            ->with('success', 'Pembayaran berhasil diperbarui!');
+        return redirect()->route('pembayaran.show', $id)
+            ->with('success', 'Pembayaran berhasil diperbarui');
     }
 
-    public function destroy(PembayaranFasilitas $pembayaran)
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy($id)
     {
-        // Hapus semua media terkait
+        $pembayaran = PembayaranFasilitas::with('media')->findOrFail($id);
+
         foreach ($pembayaran->media as $media) {
-            // Hapus file dari storage
-            $filePath = 'pembayaran_fasilitas/' . $media->file_name;
-            if (Storage::disk('public')->exists($filePath)) {
-                Storage::disk('public')->delete($filePath);
+            // Cek jika path tidak null atau kosong sebelum menghapus
+            if (!empty($media->path)) {
+                Storage::disk('public')->delete($media->path);
             }
-            // Hapus dari database
             $media->delete();
         }
 
-        // Hapus pembayaran
         $pembayaran->delete();
 
         return redirect()->route('pembayaran.index')
-            ->with('success', 'Pembayaran berhasil dihapus!');
+            ->with('success', 'Pembayaran berhasil dihapus');
     }
 
-    // Method untuk menghapus media
-    public function deleteMedia($bayarId, $mediaId)
+    /**
+     * Delete media dari pembayaran
+     */
+    public function deleteMedia($id, $mediaId)
     {
         $media = Media::where('ref_table', 'pembayaran_fasilitas')
-                     ->where('ref_id', $bayarId)
-                     ->where('media_id', $mediaId)
-                     ->firstOrFail();
+            ->where('ref_id', $id)
+            ->findOrFail($mediaId);
 
-        // Hapus file dari storage
-        $filePath = 'pembayaran_fasilitas/' . $media->file_name;
-        if (Storage::disk('public')->exists($filePath)) {
-            Storage::disk('public')->delete($filePath);
+        // Cek jika path tidak null atau kosong sebelum menghapus
+        if (!empty($media->path)) {
+            Storage::disk('public')->delete($media->path);
         }
 
-        // Hapus dari database
         $media->delete();
 
         return back()->with('success', 'File berhasil dihapus');
     }
 
-    // Method khusus untuk upload media dari halaman detail
+    /**
+     * Upload media tambahan untuk pembayaran yang sudah ada
+     */
     public function uploadMedia(Request $request, $id)
     {
-        $pembayaran = PembayaranFasilitas::findOrFail($id);
-
         $request->validate([
-            'files' => 'required',
-            'files.*' => 'file|mimes:jpg,jpeg,png,pdf',
+            'files.*'   => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
+            'captions.*'=> 'nullable|string|max:255',
         ]);
 
-        $uploadPath = 'pembayaran_fasilitas';
-
-        // Buat folder jika belum ada
-        if (!Storage::disk('public')->exists($uploadPath)) {
-            Storage::disk('public')->makeDirectory($uploadPath);
-        }
-
-        $sortOrder = Media::where('ref_table', 'pembayaran_fasilitas')
-                         ->where('ref_id', $pembayaran->bayar_id)
-                         ->max('sort_order') ?? 0;
-
-        $uploadedCount = 0;
+        $pembayaran = PembayaranFasilitas::findOrFail($id);
 
         if ($request->hasFile('files')) {
             foreach ($request->file('files') as $index => $file) {
-                if ($file->isValid()) {
-                    $originalName = $file->getClientOriginalName();
-                    $extension = $file->getClientOriginalExtension();
-                    $fileName = time() . '_' . Str::random(10) . '.' . $extension;
+                $fileName = time().'_'.uniqid().'.'.$file->getClientOriginalExtension();
+                $path = 'uploads/pembayaran_fasilitas/';
 
-                    // Simpan file ke storage public
-                    $file->storeAs($uploadPath, $fileName, 'public');
+                // Simpan file
+                $file->storeAs($path, $fileName, 'public');
 
-                    // Simpan ke database
-                    Media::create([
-                        'ref_table' => 'pembayaran_fasilitas',
-                        'ref_id' => $pembayaran->bayar_id,
-                        'file_name' => $fileName,
-                        'caption' => $request->captions[$index] ?? null,
-                        'mime_type' => $file->getMimeType(),
-                        'sort_order' => ++$sortOrder
-                    ]);
-
-                    $uploadedCount++;
-                }
+                Media::create([
+                    'ref_table'     => 'pembayaran_fasilitas',
+                    'ref_id'        => $pembayaran->bayar_id,
+                    'file_name'     => $fileName,
+                    'original_name' => $file->getClientOriginalName(),
+                    'mime_type'     => $file->getMimeType(),
+                    'size'          => $file->getSize(),
+                    'caption'       => $request->captions[$index] ?? null,
+                    'path'          => $path.$fileName,
+                ]);
             }
         }
 
-        if ($uploadedCount > 0) {
-            return back()->with('success', $uploadedCount . ' file berhasil diupload!');
-        }
-
-        return back()->with('error', 'Tidak ada file yang berhasil diupload');
+        return back()->with('success', 'File berhasil diupload');
     }
 }

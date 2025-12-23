@@ -84,21 +84,10 @@
                                     <option value="Transfer" {{ old('metode') == 'Transfer' ? 'selected' : '' }}>Transfer Bank</option>
                                     <option value="QRIS" {{ old('metode') == 'QRIS' ? 'selected' : '' }}>QRIS</option>
                                     <option value="E-Wallet" {{ old('metode') == 'E-Wallet' ? 'selected' : '' }}>E-Wallet</option>
-                                    <option value="Lainnya" {{ old('metode') == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
                                 </select>
                                 @error('metode')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group mb-3">
-                                <label class="form-label fw-bold">Status Pembayaran</label>
-                                <select name="status" class="form-control">
-                                    <option value="selesai" {{ old('status') == 'selesai' ? 'selected' : 'selected' }}>Selesai</option>
-                                    <option value="pending" {{ old('status') == 'pending' ? 'selected' : '' }}>Pending</option>
-                                    <option value="dibatalkan" {{ old('status') == 'dibatalkan' ? 'selected' : '' }}>Dibatalkan</option>
-                                </select>
                             </div>
                         </div>
                     </div>
@@ -118,7 +107,7 @@
                         <input type="file" name="files[]" class="form-control @error('files') is-invalid @enderror" multiple
                                accept=".jpg,.jpeg,.png,.pdf" id="fileInput">
                         <div class="form-text">
-                            <i class="bi bi-info-circle"></i> Format: JPG, PNG, PDF
+                            <i class="bi bi-info-circle"></i> Format: JPG, PNG, PDF (Max: 2MB per file)
                         </div>
                         @error('files')
                             <div class="invalid-feedback">{{ $message }}</div>
@@ -131,12 +120,13 @@
 
                         <div class="mt-2" id="caption-container">
                             <label class="form-label">Keterangan File (Opsional)</label>
-                            <input type="text" name="captions[]" class="form-control mt-1" placeholder="Misal: Bukti Transfer, Kwitansi, dll">
+                            <input type="text" name="captions[]" class="form-control mt-1"
+                                   placeholder="Misal: Bukti Transfer, Kwitansi, dll">
                         </div>
                     </div>
 
                     <div class="d-flex gap-2 mt-4">
-                        <button type="submit" class="btn btn-primary">
+                        <button type="submit" class="btn btn-primary" id="submitBtn">
                             <i class="bi bi-save me-1"></i> Simpan
                         </button>
                         <a href="{{ route('pembayaran.index') }}" class="btn btn-secondary">
@@ -151,25 +141,6 @@
         </div>
     </div>
 </div>
-
-<style>
-    .card {
-        border-radius: 10px;
-    }
-    .form-label {
-        color: #333;
-    }
-    .input-group-text {
-        background-color: #f8f9fa;
-    }
-    .file-info {
-        background-color: #f8f9fa;
-        border-left: 3px solid #0d6efd;
-        padding: 8px 12px;
-        margin-bottom: 5px;
-        border-radius: 5px;
-    }
-</style>
 
 <script>
     // Menampilkan nama file yang dipilih
@@ -200,42 +171,26 @@
             listHTML += `</div>`;
             fileList.innerHTML = listHTML;
 
-            // Validasi tipe file
-            const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'application/pdf'];
-            for(let i = 0; i < files.length; i++) {
-                if (!allowedTypes.includes(files[i].type.toLowerCase())) {
-                    fileList.innerHTML = `<div class="alert alert-danger">
-                        <i class="bi bi-exclamation-triangle"></i>
-                        File "${files[i].name}" tidak didukung. Hanya JPG, PNG, PDF yang diperbolehkan.
-                    </div>`;
-                    this.value = ''; // Reset input file
-                    break;
-                }
+            // Dynamic caption fields
+            const captionContainer = document.getElementById('caption-container');
+            const existingCaptions = captionContainer.querySelectorAll('input[name="captions[]"]');
+
+            // Clear existing caption fields except first one
+            for(let i = 1; i < existingCaptions.length; i++) {
+                existingCaptions[i].parentNode.remove();
             }
-        }
-    });
 
-    // Dynamic caption fields
-    document.getElementById('fileInput').addEventListener('change', function(e) {
-        const captionContainer = document.getElementById('caption-container');
-        const files = e.target.files;
+            // Add caption fields for each file
+            for(let i = 0; i < files.length; i++) {
+                if(i === 0) continue;
 
-        // Clear existing caption fields except first one
-        const existingCaptions = captionContainer.querySelectorAll('input[name="captions[]"]');
-        for(let i = 1; i < existingCaptions.length; i++) {
-            existingCaptions[i].parentNode.remove();
-        }
-
-        // Add caption fields for each file
-        for(let i = 0; i < files.length; i++) {
-            if(i === 0) continue;
-
-            const div = document.createElement('div');
-            div.className = 'mt-1';
-            div.innerHTML = `
-                <input type="text" name="captions[]" class="form-control" placeholder="Keterangan file ${i+1}...">
-            `;
-            captionContainer.appendChild(div);
+                const div = document.createElement('div');
+                div.className = 'mt-1';
+                div.innerHTML = `
+                    <input type="text" name="captions[]" class="form-control" placeholder="Keterangan file ${i+1}...">
+                `;
+                captionContainer.appendChild(div);
+            }
         }
     });
 
@@ -243,7 +198,7 @@
     document.querySelector('form').addEventListener('submit', function(e) {
         // Validasi jumlah bayar
         const jumlahInput = document.querySelector('input[name="jumlah"]');
-        if (jumlahInput.value <= 0) {
+        if (parseFloat(jumlahInput.value) <= 0) {
             e.preventDefault();
             alert('Jumlah bayar harus lebih dari 0!');
             jumlahInput.focus();
@@ -264,11 +219,30 @@
         }
 
         // Tampilkan loading
-        const submitBtn = this.querySelector('button[type="submit"]');
+        const submitBtn = document.getElementById('submitBtn');
         submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span> Menyimpan...';
         submitBtn.disabled = true;
 
         return true;
     });
 </script>
+
+<style>
+    .card {
+        border-radius: 10px;
+    }
+    .form-label {
+        color: #333;
+    }
+    .input-group-text {
+        background-color: #f8f9fa;
+    }
+    .file-info {
+        background-color: #f8f9fa;
+        border-left: 3px solid #0d6efd;
+        padding: 8px 12px;
+        margin-bottom: 5px;
+        border-radius: 5px;
+    }
+</style>
 @endsection

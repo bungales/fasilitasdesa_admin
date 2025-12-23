@@ -25,7 +25,8 @@
                         {{-- SEARCH --}}
                         <div class="col-md-6">
                             <input type="text" name="search" class="form-control"
-                                placeholder="Cari nama peminjam / fasilitas / keterangan" value="{{ request('search') }}">
+                                placeholder="Cari nama peminjam / fasilitas / keterangan"
+                                value="{{ request('search') }}">
                         </div>
 
                         {{-- TOMBOL CARI --}}
@@ -43,7 +44,7 @@
                         </div>
                     </form>
 
-                    {{-- tabel  --}}
+                    {{-- tabel --}}
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover align-middle">
                             <thead class="table-primary text-center">
@@ -54,7 +55,6 @@
                                     <th>Tgl Pembayaran</th>
                                     <th>Jumlah Bayar</th>
                                     <th>Metode</th>
-                                    <th>Dokumen</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -74,17 +74,6 @@
                                         </td>
                                         <td>
                                             <span class="badge bg-info">{{ $item->metode }}</span>
-                                        </td>
-                                        <td class="text-center">
-                                            @if($item->media->count() > 0)
-                                                <span class="badge bg-success">
-                                                    <i class="bi bi-paperclip"></i> {{ $item->media->count() }}
-                                                </span>
-                                            @else
-                                                <span class="badge bg-secondary">
-                                                    <i class="bi bi-file-earmark"></i> 0
-                                                </span>
-                                            @endif
                                         </td>
                                         <td class="text-center">
                                             <div class="d-flex justify-content-center gap-2">
@@ -119,8 +108,8 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="8" class="text-center text-muted">
-                                            Belum ada data pembayaran fasilitas
+                                        <td colspan="7" class="text-center text-muted">
+                                            <i class="bi bi-inbox"></i> Belum ada data pembayaran fasilitas
                                         </td>
                                     </tr>
                                 @endforelse
@@ -159,6 +148,12 @@
         }
         .badge {
             font-size: 0.85em;
+        }
+        .table img {
+            transition: transform 0.2s;
+        }
+        .table img:hover {
+            transform: scale(1.1);
         }
     </style>
 @endsection

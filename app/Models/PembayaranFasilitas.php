@@ -18,9 +18,7 @@ class PembayaranFasilitas extends Model
         'tanggal',
         'jumlah',
         'metode',
-        'keterangan',
-        'status',
-        'bukti_bayar'
+        'keterangan'
     ];
 
     protected $casts = [
@@ -34,17 +32,28 @@ class PembayaranFasilitas extends Model
         return $this->belongsTo(PeminjamanFasilitas::class, 'pinjam_id', 'pinjam_id');
     }
 
-    // Relasi ke media
+    // Relasi ke media - SESUAI dengan struktur Media Anda
     public function media()
     {
-        return $this->morphMany(Media::class, 'referensi', 'ref_table', 'ref_id')
-                   ->where('ref_table', 'pembayaran_fasilitas')
-                   ->orderBy('sort_order');
+        return $this->hasMany(Media::class, 'ref_id', 'bayar_id')
+                   ->where('ref_table', 'pembayaran_fasilitas');
     }
 
-    // Scope untuk pembayaran aktif
-    public function scopeAktif($query)
+    // Accessor untuk jumlah format Rupiah
+    public function getJumlahRupiahAttribute()
     {
-        return $query->where('status', '!=', 'dibatalkan');
+        return 'Rp ' . number_format($this->jumlah, 0, ',', '.');
+    }
+
+    // Accessor untuk tanggal format Indonesia
+    public function getTanggalIndoAttribute()
+    {
+        return \Carbon\Carbon::parse($this->tanggal)->format('d/m/Y');
+    }
+
+    // Scope untuk pembayaran yang memiliki media
+    public function scopeWithMedia($query)
+    {
+        return $query->whereHas('media');
     }
 }

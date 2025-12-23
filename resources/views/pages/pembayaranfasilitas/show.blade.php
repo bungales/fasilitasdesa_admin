@@ -99,7 +99,7 @@
                                     <input type="file" name="files[]" class="form-control" multiple required
                                            accept=".jpg,.jpeg,.png,.pdf" id="fileInput">
                                     <div class="form-text">
-                                        <i class="bi bi-info-circle"></i> Format: JPG, PNG, PDF
+                                        <i class="bi bi-info-circle"></i> Format: JPG, PNG, PDF (Max: 2MB per file)
                                     </div>
                                     <div id="fileList" class="mt-2"></div>
                                 </div>
@@ -109,7 +109,7 @@
                                     <input type="text" name="captions[]" class="form-control" placeholder="Contoh: Bukti Transfer, Kwitansi, dll">
                                 </div>
 
-                                <button type="submit" class="btn btn-success">
+                                <button type="submit" class="btn btn-success" id="uploadBtn">
                                     <i class="bi bi-upload me-1"></i> Upload File
                                 </button>
                             </form>
@@ -127,16 +127,16 @@
                                         <div class="col-md-6 mb-3">
                                             <div class="card border hover-shadow">
                                                 <div class="card-body p-3">
-                                                    @if($media->is_image)
-                                                        <!-- Tampilkan gambar -->
+                                                    @if(strpos($media->mime_type, 'image/') === 0)
+                                                        <!-- Tampilkan gambar dari STORAGE -->
                                                         <div class="text-center">
-                                                            <img src="{{ $media->url }}"
+                                                            <img src="{{ Storage::url($media->path) }}"
                                                                  class="img-fluid rounded mb-2"
                                                                  alt="{{ $media->caption }}"
                                                                  style="max-height: 150px; object-fit: contain; width: 100%;"
-                                                                 onerror="this.onerror=null; this.src='data:image/svg+xml;charset=UTF-8,<svg width=\"100%\" height=\"150\" xmlns=\"http://www.w3.org/2000/svg\"><rect width=\"100%\" height=\"100%\" fill=\"%23f8f9fa\"/><text x=\"50%\" y=\"50%\" font-family=\"Arial\" font-size=\"14\" fill=\"%236c757d\" text-anchor=\"middle\" dy=\".3em\">Gambar tidak ditemukan</text></svg>';">
+                                                                 onerror="this.onerror=null; this.src='https://via.placeholder.com/300x150?text=Gambar+Tidak+Ditemukan';">
                                                         </div>
-                                                    @elseif($media->is_pdf)
+                                                    @elseif($media->mime_type === 'application/pdf')
                                                         <!-- Tampilkan icon PDF -->
                                                         <div class="text-center py-3">
                                                             <i class="bi bi-file-pdf text-danger" style="font-size: 3rem;"></i>
@@ -158,15 +158,15 @@
                                                     </h6>
 
                                                     <div class="d-flex justify-content-between mt-3">
-                                                        <a href="{{ $media->url }}"
+                                                        <a href="{{ Storage::url($media->path) }}"
                                                            target="_blank"
                                                            class="btn btn-sm btn-outline-primary"
                                                            title="Lihat">
                                                             <i class="bi bi-eye"></i>
                                                         </a>
 
-                                                        <a href="{{ $media->url }}"
-                                                           download="{{ $media->file_name }}"
+                                                        <a href="{{ Storage::url($media->path) }}"
+                                                           download="{{ $media->original_name }}"
                                                            class="btn btn-sm btn-outline-success"
                                                            title="Download">
                                                             <i class="bi bi-download"></i>
@@ -186,7 +186,16 @@
                                                     <div class="mt-2 text-center">
                                                         <small class="text-muted">
                                                             <i class="bi bi-info-circle me-1"></i>
-                                                            {{ $media->size }}
+                                                            @php
+                                                                $bytes = $media->size;
+                                                                if ($bytes >= 1048576) {
+                                                                    echo number_format($bytes / 1048576, 2) . ' MB';
+                                                                } elseif ($bytes >= 1024) {
+                                                                    echo number_format($bytes / 1024, 2) . ' KB';
+                                                                } else {
+                                                                    echo $bytes . ' bytes';
+                                                                }
+                                                            @endphp
                                                         </small>
                                                     </div>
                                                 </div>
@@ -270,12 +279,6 @@
         box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         transform: translateY(-2px);
     }
-    .row-pink {
-        background-color: #ffe6f2 !important;
-    }
-    .row-blue {
-        background-color: #e6f3ff !important;
-    }
     .btn-outline-primary:hover {
         background-color: #0d6efd;
         color: white;
@@ -287,13 +290,6 @@
     .btn-outline-danger:hover {
         background-color: #dc3545;
         color: white;
-    }
-    .file-info {
-        background-color: #f8f9fa;
-        border-left: 3px solid #0d6efd;
-        padding: 5px 10px;
-        margin-bottom: 5px;
-        border-radius: 3px;
     }
 </style>
 
@@ -346,9 +342,9 @@
         }
 
         // Tampilkan loading
-        const submitBtn = this.querySelector('button[type="submit"]');
-        submitBtn.innerHTML = '<i class="bi bi-arrow-clockwise me-1"></i> Uploading...';
-        submitBtn.disabled = true;
+        const uploadBtn = document.getElementById('uploadBtn');
+        uploadBtn.innerHTML = '<i class="bi bi-arrow-clockwise me-1"></i> Uploading...';
+        uploadBtn.disabled = true;
 
         return true;
     });
