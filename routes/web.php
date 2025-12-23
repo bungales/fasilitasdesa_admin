@@ -37,59 +37,58 @@ Route::get('/user/create', [UserController::class, 'create'])->name('user.create
 Route::post('/user', [UserController::class, 'store'])->name('user.store');
 // ==============================================================
 
-
-
-// Route yang memerlukan login (dilindungi dengan middleware)
-// Route::group(['middleware' => ['checkislogin']], function () {
 // Dashboard
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 
-// Resource routes yang memerlukan login
+// Resource routes
 Route::resource('warga', WargaController::class);
 Route::resource('fasilitasumum', FasilitasUmumController::class);
 Route::resource('user', UserController::class);
 Route::resource('petugas-fasilitas', PetugasFasilitasController::class);
-
-// Syarat Fasilitas Routes (jika ingin di dalam middleware)
-Route::resource('syarat-fasilitas', SyaratFasilitasController::class);
 Route::resource('syarat-fasilitas', SyaratFasilitasController::class);
 
+// Route khusus untuk Syarat Fasilitas
 Route::get(
     '/syarat-fasilitas/{id}/download',
     [SyaratFasilitasController::class, 'downloadDokumen']
 )->name('syarat-fasilitas.download');
 
+// Route khusus untuk Petugas Fasilitas
 Route::get('/petugas-fasilitas/fasilitas/{fasilitas_id}', [PetugasFasilitasController::class, 'byFasilitas'])
     ->name('petugas-fasilitas.byFasilitas');
 Route::get('/petugas-fasilitas/warga/{warga_id}', [PetugasFasilitasController::class, 'byWarga'])
     ->name('petugas-fasilitas.byWarga');
 
+
+// Resource untuk Peminjaman Fasilitas
 Route::resource('peminjaman', PeminjamanFasilitasController::class);
+
+// Route khusus untuk Media pada Peminjaman Fasilitas
+Route::post('/peminjaman/{id}/upload-media', [PeminjamanFasilitasController::class, 'uploadMedia'])
+    ->name('peminjaman.upload-media');
+
+Route::delete('/peminjaman/{id}/delete-media/{mediaId}', [PeminjamanFasilitasController::class, 'deleteMedia'])
+    ->name('peminjaman.delete-media');
+
+
+// Route untuk Pembayaran Fasilitas
 Route::resource('pembayaran', PembayaranFasilitasController::class);
 
-// Route untuk menghapus file media
+// Route untuk menghapus file media pada Fasilitas Umum
 Route::delete('/fasilitasumum/{fasilitasId}/media/{mediaId}', [FasilitasUmumController::class, 'deleteMedia'])
     ->name('fasilitasumum.deleteMedia');
 
-
-// Route untuk menghapus media pada pembayaran fasilitas
+// Route untuk Media pada Pembayaran Fasilitas
 Route::delete('/pembayaran/{bayarId}/media/{mediaId}', [PembayaranFasilitasController::class, 'deleteMedia'])
     ->name('pembayaran.deleteMedia');
 
-// Route khusus untuk upload media dari halaman detail pembayaran
 Route::post('/pembayaran/{id}/upload-media', [PembayaranFasilitasController::class, 'uploadMedia'])
     ->name('pembayaran.uploadMedia');
 
-// Route untuk media controller (untuk upload umum)
+// Route untuk Media Controller (untuk upload umum)
 Route::resource('media', MediaController::class);
 Route::post('/media/upload-ajax', [MediaController::class, 'uploadAjax'])->name('media.uploadAjax');
 Route::post('/media/reorder', [MediaController::class, 'reorder'])->name('media.reorder');
 Route::get('/media/by-reference/{refTable}/{refId}', [MediaController::class, 'getByReference'])->name('media.byReference');
+
 // ==============================================================
-
-// KOMEN kalau mau bisa akses semua
-// Route::group(['middleware' => ['checkrole:Super Admin']], function () {
-//     Route::resource('user', UserController::class);
-// });
-
-// });

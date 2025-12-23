@@ -21,13 +21,13 @@ class PeminjamanFasilitas extends Model
         'total_biaya',
     ];
 
-    // Relasi yang benar ke fasilitas_umum
+    // Relasi ke fasilitas_umum
     public function fasilitas()
     {
         return $this->belongsTo(FasilitasUmum::class, 'fasilitas_id', 'fasilitas_id');
     }
 
-    // Sesuaikan PK warga nanti setelah kamu kirim
+    // Relasi ke warga
     public function warga()
     {
         return $this->belongsTo(Warga::class, 'warga_id', 'warga_id');
@@ -36,5 +36,13 @@ class PeminjamanFasilitas extends Model
     public function pembayaran()
     {
         return $this->hasMany(PembayaranFasilitas::class, 'pinjam_id', 'pinjam_id');
+    }
+
+    // Relasi ke media
+    public function media()
+    {
+        return $this->hasMany(Media::class, 'ref_id', 'pinjam_id')
+                    ->where('ref_table', 'peminjaman_fasilitas')
+                    ->orderBy('sort_order');
     }
 }
