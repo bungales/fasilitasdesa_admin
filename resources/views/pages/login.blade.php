@@ -506,11 +506,11 @@
                 </div>
             @endif
 
-            <!-- Login Form -->
+
             <form action="{{ route('login.store') }}" method="POST" id="loginForm">
                 @csrf
 
-                <!-- Email Field -->
+
                 <div class="form-group">
                     <label class="form-label" for="email">
                         <i class="fas fa-envelope"></i> Email
@@ -528,7 +528,6 @@
                     </div>
                 </div>
 
-                <!-- Password Field -->
                 <div class="form-group">
                     <label class="form-label" for="password">
                         <i class="fas fa-lock"></i> Password

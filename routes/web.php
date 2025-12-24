@@ -5,15 +5,16 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FasilitasController;
 use App\Http\Controllers\FasilitasUmumController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\MediaController;
 use App\Http\Controllers\PembayaranFasilitasController;
 use App\Http\Controllers\PeminjamanFasilitasController;
 use App\Http\Controllers\PetugasFasilitasController;
 use App\Http\Controllers\SyaratFasilitasController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WargaController;
-use App\Http\Controllers\MediaController;
 use Illuminate\Support\Facades\Route;
 
+// ==================== ROUTE PUBLIK (TANPA LOGIN) ====================
 Route::get('/', function () {
     return view('pages.login');
 });
@@ -26,39 +27,41 @@ Route::get('/login', [LoginController::class, 'index'])->name('login.index');
 Route::post('/login', [LoginController::class, 'store'])->name('login.store');
 Route::get('/logout', [LoginController::class, 'destroy'])->name('login.destroy');
 
-// Route yang TIDAK memerlukan login (akses publik)
-Route::get('/fasilitas', [FasilitasController::class, 'index']);
 
-// ============== TAMBAHAN ROUTE UNTUK CREATE USER ==============
+
+// Route untuk register/create user (publik)
 Route::get('/register', function () {
     return view('pages.register');
 })->name('register.index');
 Route::get('/user/create', [UserController::class, 'create'])->name('user.create');
 Route::post('/user', [UserController::class, 'store'])->name('user.store');
-// ==============================================================
 
-// Dashboard
+// ==================== ROUTE YANG MEMERLUKAN LOGIN ====================
+// Route::middleware(['auth.login'])->group(function () {
+// });
+
+// Route publik untuk fasilitas
+Route::get('/fasilitas', [FasilitasController::class, 'index']);
+
+// Dashboard untuk semua user yang login (admin dan user biasa)
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 
-// Resource routes
-Route::resource('warga', WargaController::class);
-Route::resource('fasilitasumum', FasilitasUmumController::class);
-Route::resource('user', UserController::class);
-Route::resource('petugas-fasilitas', PetugasFasilitasController::class);
-Route::resource('syarat-fasilitas', SyaratFasilitasController::class);
-
-// Route khusus untuk Syarat Fasilitas
-Route::get(
-    '/syarat-fasilitas/{id}/download',
-    [SyaratFasilitasController::class, 'downloadDokumen']
-)->name('syarat-fasilitas.download');
-
-// Route khusus untuk Petugas Fasilitas
+// Route untuk Petugas Fasilitas (bisa diakses oleh yang login)
 Route::get('/petugas-fasilitas/fasilitas/{fasilitas_id}', [PetugasFasilitasController::class, 'byFasilitas'])
     ->name('petugas-fasilitas.byFasilitas');
 Route::get('/petugas-fasilitas/warga/{warga_id}', [PetugasFasilitasController::class, 'byWarga'])
     ->name('petugas-fasilitas.byWarga');
 
+// Resource routes untuk admin (sementara bisa diakses semua)
+Route::resource('warga', WargaController::class);
+Route::resource('fasilitasumum', FasilitasUmumController::class);
+Route::resource('user', UserController::class)->except(['create', 'store']);
+Route::resource('petugas-fasilitas', PetugasFasilitasController::class);
+Route::resource('syarat-fasilitas', SyaratFasilitasController::class);
+
+// Route khusus untuk Syarat Fasilitas
+Route::get('/syarat-fasilitas/{id}/download', [SyaratFasilitasController::class, 'downloadDokumen'])
+    ->name('syarat-fasilitas.download');
 
 // Resource untuk Peminjaman Fasilitas
 Route::resource('peminjaman', PeminjamanFasilitasController::class);
@@ -66,10 +69,8 @@ Route::resource('peminjaman', PeminjamanFasilitasController::class);
 // Route khusus untuk Media pada Peminjaman Fasilitas
 Route::post('/peminjaman/{id}/upload-media', [PeminjamanFasilitasController::class, 'uploadMedia'])
     ->name('peminjaman.upload-media');
-
 Route::delete('/peminjaman/{id}/delete-media/{mediaId}', [PeminjamanFasilitasController::class, 'deleteMedia'])
     ->name('peminjaman.delete-media');
-
 
 // Route untuk Pembayaran Fasilitas
 Route::resource('pembayaran', PembayaranFasilitasController::class);
@@ -81,7 +82,6 @@ Route::delete('/fasilitasumum/{fasilitasId}/media/{mediaId}', [FasilitasUmumCont
 // Route untuk Media pada Pembayaran Fasilitas
 Route::delete('/pembayaran/{bayarId}/media/{mediaId}', [PembayaranFasilitasController::class, 'deleteMedia'])
     ->name('pembayaran.deleteMedia');
-
 Route::post('/pembayaran/{id}/upload-media', [PembayaranFasilitasController::class, 'uploadMedia'])
     ->name('pembayaran.uploadMedia');
 
@@ -91,4 +91,7 @@ Route::post('/media/upload-ajax', [MediaController::class, 'uploadAjax'])->name(
 Route::post('/media/reorder', [MediaController::class, 'reorder'])->name('media.reorder');
 Route::get('/media/by-reference/{refTable}/{refId}', [MediaController::class, 'getByReference'])->name('media.byReference');
 
-// ==============================================================
+// ==================== MIDDLEWARE ROLE (DIKOMENTARI SAAT INI) ====================
+
+// Route::middleware(['check.role:admin'])->group(function () {
+// });

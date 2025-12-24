@@ -15,21 +15,21 @@ class PeminjamanFasilitasController extends Controller
 {
     public function index(Request $request)
     {
-        // SEARCH + FILTER
+
         $search = $request->search;
         $filterStatus = $request->status;
         $month = $request->month;
 
-        // Query dasar dengan media_count
+
         $query = PeminjamanFasilitas::with(['fasilitas', 'warga'])->withCount('media');
 
-        // SEARCH
+
         if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->whereHas('warga', function ($w) use ($search) {
                     $w->where('nama', 'like', "%$search%");
 
-                    // CEK apakah kolom 'nik' ada, jika tidak gunakan kolom yang ada
+
                     if (\Schema::hasColumn('warga', 'nik')) {
                         $w->orWhere('nik', 'like', "%$search%");
                     } elseif (\Schema::hasColumn('warga', 'no_identitas')) {
@@ -45,7 +45,7 @@ class PeminjamanFasilitasController extends Controller
             });
         }
 
-        // FILTER STATUS
+
         if ($filterStatus) {
             $query->where('status', $filterStatus);
         }
@@ -102,7 +102,7 @@ class PeminjamanFasilitasController extends Controller
         ]);
 
         try {
-            // Format tanggal
+          
             $data = $request->all();
             $data['tanggal_mulai'] = Carbon::parse($request->tanggal_mulai)->format('Y-m-d');
             $data['tanggal_selesai'] = Carbon::parse($request->tanggal_selesai)->format('Y-m-d');

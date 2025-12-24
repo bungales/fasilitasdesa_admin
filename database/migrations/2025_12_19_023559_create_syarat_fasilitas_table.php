@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('fasilitas_id');
             $table->string('nama_syarat');
             $table->text('deskripsi')->nullable();
-            $table->string('dokumen_syarat')->nullable(); // Untuk menyimpan path/URL media
+            $table->string('dokumen_syarat')->nullable();
             $table->timestamps();
 
             // Foreign key constraint
