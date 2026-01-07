@@ -1,184 +1,165 @@
 <?php
-
 namespace App\Http\Controllers;
 
-use App\Models\PetugasFasilitas;
 use App\Models\FasilitasUmum;
+use App\Models\SyaratFasilitas;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Storage;
 
-class PetugasFasilitasController extends Controller
+class SyaratFasilitasController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request)
     {
-        $query = PetugasFasilitas::query();
+        $query = SyaratFasilitas::with('fasilitas');
 
-        // Filter berdasarkan fasilitas
+        // filter fasilitas
         if ($request->filled('fasilitas_id')) {
             $query->where('fasilitas_id', $request->fasilitas_id);
         }
 
-        // Search
+        // search
         if ($request->filled('search')) {
-            $query->where(function($q) use ($request) {
-                $q->where('nama_petugas', 'like', '%' . $request->search . '%')
-                  ->orWhere('jabatan', 'like', '%' . $request->search . '%')
-                  ->orWhereHas('fasilitas', function($w) use ($request) {
-                      $w->where('nama', 'like', '%' . $request->search . '%');
-                  });
+            $query->where(function ($q) use ($request) {
+                $q->where('nama_syarat', 'like', '%' . $request->search . '%')
+                    ->orWhere('deskripsi', 'like', '%' . $request->search . '%')
+                    ->orWhereHas('fasilitas', function ($f) use ($request) {
+                        $f->where('nama', 'like', '%' . $request->search . '%');
+                    });
             });
         }
 
-        // PERBAIKAN: Gunakan 'id' bukan 'petugas_id'
-        // Cek dulu kolom mana yang ada di database
-        $orderColumn = 'created_at'; // default
+        $syaratFasilitas = $query->paginate(10);
 
-        if (Schema::hasColumn('petugas_fasilitas', 'id')) {
-            $orderColumn = 'id';
-        } elseif (Schema::hasColumn('petugas_fasilitas', 'petugas_id')) {
-            $orderColumn = 'petugas_id';
-        }
-
-        $petugasFasilitas = $query->orderBy($orderColumn, 'desc')->paginate(10);
-
-        // Ambil semua fasilitas untuk dropdown
+        // 🔥 ambil fasilitas untuk dropdown filter
         $fasilitasList = FasilitasUmum::orderBy('nama')->get();
 
         return view(
-            'pages.petugasfasilitas.index',
-            compact('petugasFasilitas', 'fasilitasList')
+            'pages.syaratfasilitas.index',
+            compact('syaratFasilitas', 'fasilitasList')
         );
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    public function show($id)
+    {
+        $syaratFasilitas = SyaratFasilitas::with('fasilitas')->findOrFail($id);
+
+        return view('pages.syaratfasilitas.show', compact('syaratFasilitas'));
+    }
+
     public function create()
     {
         $fasilitasList = FasilitasUmum::orderBy('nama')->get();
-        return view('pages.petugasfasilitas.create', compact('fasilitasList'));
+
+        return view(
+            'pages.syaratfasilitas.create',
+            compact('fasilitasList')
+        );
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
-            'fasilitas_id'   => 'required|exists:fasilitas_umum,id',
-            'nama_petugas'   => 'required|string|max:255',
-            'jabatan'        => 'required|string|max:100',
-            'no_telepon'     => 'nullable|string|max:20',
-            'alamat'         => 'nullable|string',
-            'tanggal_mulai'  => 'nullable|date',
-            'status'         => 'nullable|in:active,inactive',
+            'fasilitas_id'   => 'required|exists:fasilitas_umum,fasilitas_id',
+            'nama_syarat'    => 'required|string|max:255',
+            'deskripsi'      => 'nullable|string',
+            'dokumen_syarat' => 'nullable|file|mimes:pdf,jpg,jpeg,png,doc,docx|max:2048',
         ]);
 
-        PetugasFasilitas::create([
-            'fasilitas_id'   => $request->fasilitas_id,
-            'nama_petugas'   => $request->nama_petugas,
-            'jabatan'        => $request->jabatan,
-            'no_telepon'     => $request->no_telepon,
-            'alamat'         => $request->alamat,
-            'tanggal_mulai'  => $request->tanggal_mulai,
-            'status'         => $request->status ?? 'active',
+        $data = $request->only([
+            'fasilitas_id',
+            'nama_syarat',
+            'deskripsi',
         ]);
+
+        if ($request->hasFile('dokumen_syarat')) {
+            $data['dokumen_syarat'] = $request
+                ->file('dokumen_syarat')
+                ->store('syarat_fasilitas', 'public');
+        }
+
+        SyaratFasilitas::create($data);
 
         return redirect()
-            ->route('petugas-fasilitas.index')
-            ->with('success', 'Petugas fasilitas berhasil ditambahkan.');
+            ->route('syarat-fasilitas.index')
+            ->with('success', 'Syarat fasilitas berhasil ditambahkan');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show($id)
-    {
-        $petugas = PetugasFasilitas::with('fasilitas')->findOrFail($id);
-        return view('pages.petugasfasilitas.show', compact('petugas'));
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit($id)
     {
-        $petugas = PetugasFasilitas::findOrFail($id);
+        $syaratFasilitas = SyaratFasilitas::findOrFail($id);
+
         $fasilitasList = FasilitasUmum::orderBy('nama')->get();
 
-        return view('pages.petugasfasilitas.edit', compact('petugas', 'fasilitasList'));
+        return view(
+            'pages.syaratfasilitas.edit',
+            compact('syaratFasilitas', 'fasilitasList')
+        );
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, $id)
     {
-        $petugas = PetugasFasilitas::findOrFail($id);
+        $syaratFasilitas = SyaratFasilitas::findOrFail($id);
 
         $request->validate([
-            'fasilitas_id'   => 'required|exists:fasilitas_umum,id',
-            'nama_petugas'   => 'required|string|max:255',
-            'jabatan'        => 'required|string|max:100',
-            'no_telepon'     => 'nullable|string|max:20',
-            'alamat'         => 'nullable|string',
-            'tanggal_mulai'  => 'nullable|date',
-            'status'         => 'nullable|in:active,inactive',
+            'fasilitas_id'   => 'required|exists:fasilitas_umum,fasilitas_id',
+            'nama_syarat'    => 'required|string|max:255',
+            'deskripsi'      => 'nullable|string',
+            'dokumen_syarat' => 'nullable|file|mimes:pdf,jpg,jpeg,png,doc,docx|max:2048',
         ]);
 
-        $petugas->update([
-            'fasilitas_id'   => $request->fasilitas_id,
-            'nama_petugas'   => $request->nama_petugas,
-            'jabatan'        => $request->jabatan,
-            'no_telepon'     => $request->no_telepon,
-            'alamat'         => $request->alamat,
-            'tanggal_mulai'  => $request->tanggal_mulai,
-            'status'         => $request->status ?? 'active',
+        $data = $request->only([
+            'fasilitas_id',
+            'nama_syarat',
+            'deskripsi',
         ]);
+
+        if ($request->hasFile('dokumen_syarat')) {
+
+            if (
+                $syaratFasilitas->dokumen_syarat &&
+                Storage::disk('public')->exists($syaratFasilitas->dokumen_syarat)
+            ) {
+                Storage::disk('public')->delete($syaratFasilitas->dokumen_syarat);
+            }
+
+            $data['dokumen_syarat'] = $request
+                ->file('dokumen_syarat')
+                ->store('syarat_fasilitas', 'public');
+        }
+
+        $syaratFasilitas->update($data);
 
         return redirect()
-            ->route('petugas-fasilitas.index')
-            ->with('success', 'Petugas fasilitas berhasil diperbarui.');
+            ->route('syarat-fasilitas.index')
+            ->with('success', 'Syarat fasilitas berhasil diperbarui');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy($id)
     {
-        $petugas = PetugasFasilitas::findOrFail($id);
-        $petugas->delete();
+        $syaratFasilitas = SyaratFasilitas::findOrFail($id);
+
+        if (
+            $syaratFasilitas->dokumen_syarat &&
+            Storage::disk('public')->exists($syaratFasilitas->dokumen_syarat)
+        ) {
+            Storage::disk('public')->delete($syaratFasilitas->dokumen_syarat);
+        }
+
+        $syaratFasilitas->delete();
 
         return redirect()
-            ->route('petugas-fasilitas.index')
-            ->with('success', 'Petugas fasilitas berhasil dihapus.');
+            ->route('syarat-fasilitas.index')
+            ->with('success', 'Syarat fasilitas berhasil dihapus');
     }
 
-    /**
-     * Get petugas by fasilitas
-     */
-    public function byFasilitas($fasilitas_id)
+    public function downloadDokumen($id)
     {
-        $petugas = PetugasFasilitas::where('fasilitas_id', $fasilitas_id)
-            ->orderBy('nama_petugas')
-            ->get();
+        $syaratFasilitas = SyaratFasilitas::findOrFail($id);
 
-        return response()->json($petugas);
-    }
+        if (! $syaratFasilitas->dokumen_syarat) {
+            return redirect()->back()->with('error', 'Dokumen tidak tersedia');
+        }
 
-    /**
-     * Get petugas by warga (jika ada relasi)
-     */
-    public function byWarga($warga_id)
-    {
-        // Jika ada relasi dengan warga, sesuaikan
-        $petugas = PetugasFasilitas::where('warga_id', $warga_id)
-            ->orderBy('nama_petugas')
-            ->get();
-
-        return response()->json($petugas);
+        return Storage::disk('public')->download($syaratFasilitas->dokumen_syarat);
     }
 }
