@@ -101,17 +101,17 @@ class PetugasFasilitasController extends Controller
     }
 
     // PARAMETER: $petugas_fasilita (sesuai Route::resource())
-    public function show($petugas_fasilita)
+    public function show($petugas_fasilitas)
     {
         $petugasFasilitas = PetugasFasilitas::with(['warga', 'fasilitas'])
-            ->findOrFail($petugas_fasilita);
+            ->findOrFail($petugas_fasilitas);
 
         return view('pages.petugasfasilitas.show', compact('petugasFasilitas'));
     }
 
-    public function edit($petugas_fasilita)
+    public function edit($petugas_fasilitas)
     {
-        $petugasFasilitas = PetugasFasilitas::findOrFail($petugas_fasilita);
+        $petugasFasilitas = PetugasFasilitas::findOrFail($petugas_fasilitas);
         $fasilitasList = FasilitasUmum::orderBy('nama')->get();
         $wargaList = Warga::orderBy('nama')->get();
 
@@ -121,9 +121,9 @@ class PetugasFasilitasController extends Controller
         );
     }
 
-    public function update(Request $request, $petugas_fasilita)
+    public function update(Request $request, $petugas_fasilitas)
     {
-        $petugasFasilitas = PetugasFasilitas::findOrFail($petugas_fasilita);
+        $petugasFasilitas = PetugasFasilitas::findOrFail($petugas_fasilitas);
 
         $request->validate([
             'fasilitas_id' => 'required|exists:fasilitas_umum,fasilitas_id',
@@ -155,7 +155,7 @@ class PetugasFasilitasController extends Controller
 
             $isPenanggungJawabLain = PetugasFasilitas::where('petugas_warga_id', $request->petugas_warga_id)
                 ->whereRaw('LOWER(peran) = ?', ['penanggung jawab'])
-                ->where($primaryKey, '!=', $petugas_fasilita)
+                ->where($primaryKey, '!=', $petugas_fasilitas)
                 ->exists();
 
             if ($isPenanggungJawabLain) {
@@ -177,9 +177,9 @@ class PetugasFasilitasController extends Controller
             ->with('success', 'Petugas fasilitas berhasil diperbarui');
     }
 
-    public function destroy($petugas_fasilita)
+    public function destroy($petugas_fasilitas)
     {
-        $petugasFasilitas = PetugasFasilitas::findOrFail($petugas_fasilita);
+        $petugasFasilitas = PetugasFasilitas::findOrFail($petugas_fasilitas);
         $petugasFasilitas->delete();
 
         return redirect()
