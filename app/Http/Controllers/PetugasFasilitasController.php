@@ -139,7 +139,7 @@ class PetugasFasilitasController extends Controller
 
             $existing = PetugasFasilitas::where('fasilitas_id', $request->fasilitas_id)
                 ->where('petugas_warga_id', $request->petugas_warga_id)
-                ->where($primaryKey, '!=', $petugas_fasilita)
+                ->where($primaryKey, '!=', $petugas_fasilitas)
                 ->exists();
 
             if ($existing) {
