@@ -34,6 +34,13 @@
                     </div>
                 @endif
 
+                @if (session('error'))
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="bi bi-exclamation-circle me-2"></i> {{ session('error') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+
                 {{-- 🔎 SEARCH & FILTER --}}
                 <div class="card mb-4 border">
                     <div class="card-body">
@@ -64,7 +71,7 @@
                             </div>
 
                             <div class="col-md-2">
-                                <button class="btn btn-dark w-100">
+                                <button type="submit" class="btn btn-dark w-100">
                                     <i class="bi bi-filter me-1"></i> Filter
                                 </button>
                             </div>
@@ -175,15 +182,15 @@
                                              data-bs-toggle="tooltip"
                                              title="{{ $item->name }}"
                                              onclick="window.location.href='{{ route('user.show', $item) }}'">
-                                            @if($item->profile_picture_url)
-                                                <img src="{{ $item->profile_picture_url }}"
+                                            @if($item->profile_picture)
+                                                <img src="{{ asset('storage/' . $item->profile_picture) }}"
                                                      alt="{{ $item->name }}"
                                                      class="rounded-circle border shadow-sm"
                                                      style="width: 100%; height: 100%; object-fit: cover;">
                                             @else
                                                 <div class="rounded-circle border shadow-sm d-flex align-items-center justify-content-center"
-                                                     style="width: 100%; height: 100%; background: linear-gradient(135deg, {{ $item->avatar_color }} 0%, {{ $item->avatar_color }}80 100%); color: white; font-weight: bold; font-size: 18px;">
-                                                    {{ $item->initial }}
+                                                     style="width: 100%; height: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; font-weight: bold; font-size: 18px;">
+                                                    {{ strtoupper(substr($item->name, 0, 1)) }}
                                                 </div>
                                             @endif
                                         </div>
@@ -254,53 +261,14 @@
                                                 <i class="bi bi-pencil"></i>
                                             </a>
 
-                                            <!-- TOMBOL HAPUS dengan Modal -->
+                                            <!-- TOMBOL HAPUS -->
                                             <button type="button"
-                                                    class="btn btn-sm btn-outline-danger"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#deleteModal{{ $item->id }}"
+                                                    class="btn btn-sm btn-outline-danger delete-btn"
+                                                    data-user-id="{{ $item->id }}"
+                                                    data-user-name="{{ $item->name }}"
                                                     title="Hapus">
                                                 <i class="bi bi-trash"></i>
                                             </button>
-                                        </div>
-
-                                        <!-- Delete Modal for each user -->
-                                        <div class="modal fade" id="deleteModal{{ $item->id }}" tabindex="-1" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title">
-                                                            <i class="bi bi-exclamation-triangle text-danger me-2"></i>
-                                                            Konfirmasi Hapus
-                                                        </h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                                    </div>
-                                                    <div class="modal-body text-center py-4">
-                                                        <div class="mb-4">
-                                                            <div class="rounded-circle bg-danger bg-opacity-10 d-inline-flex align-items-center justify-content-center p-4 mb-3">
-                                                                <i class="bi bi-trash text-danger" style="font-size: 2rem;"></i>
-                                                            </div>
-                                                            <h5 class="mb-2">Hapus User?</h5>
-                                                            <p class="text-muted mb-0">
-                                                                Anda akan menghapus user <strong>{{ $item->name }}</strong> ({{ $item->email }})
-                                                            </p>
-                                                            <p class="text-danger small mt-2">
-                                                                <i class="bi bi-info-circle me-1"></i> Tindakan ini tidak dapat dibatalkan
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                                        <form action="{{ route('user.destroy', $item) }}" method="POST" class="d-inline">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="btn btn-danger">
-                                                                <i class="bi bi-trash me-1"></i> Ya, Hapus
-                                                            </button>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
                                         </div>
                                     </td>
                                 </tr>
@@ -413,17 +381,6 @@
         transform: translateY(-5px);
         box-shadow: 0 10px 20px rgba(0,0,0,0.2);
     }
-
-    /* Animation for new users */
-    @keyframes pulse {
-        0% { box-shadow: 0 0 0 0 rgba(25, 135, 84, 0.7); }
-        70% { box-shadow: 0 0 0 10px rgba(25, 135, 84, 0); }
-        100% { box-shadow: 0 0 0 0 rgba(25, 135, 84, 0); }
-    }
-
-    .bg-success.bg-opacity-10 {
-        animation: pulse 2s infinite;
-    }
 </style>
 
 <script>
@@ -432,15 +389,42 @@
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
         var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl)
-        })
-    });
+        });
 
-    // Click avatar to go to detail
-    document.querySelectorAll('.avatar-wrapper').forEach(function(avatar) {
-        avatar.addEventListener('click', function(e) {
-            if (!e.target.closest('.btn')) {
-                window.location.href = this.getAttribute('onclick').match(/'([^']+)'/)[1];
-            }
+        // Delete functionality
+        document.querySelectorAll('.delete-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const userId = this.getAttribute('data-user-id');
+                const userName = this.getAttribute('data-user-name');
+
+                if (confirm(`Yakin ingin menghapus user "${userName}"?`)) {
+                    console.log('Deleting user ID:', userId);
+
+                    // Create form
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = `/user/${userId}`;
+
+                    // Add CSRF token
+                    const csrfToken = document.createElement('input');
+                    csrfToken.type = 'hidden';
+                    csrfToken.name = '_token';
+                    csrfToken.value = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+                    // Add method spoofing
+                    const methodInput = document.createElement('input');
+                    methodInput.type = 'hidden';
+                    methodInput.name = '_method';
+                    methodInput.value = 'DELETE';
+
+                    form.appendChild(csrfToken);
+                    form.appendChild(methodInput);
+
+                    // Submit form
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            });
         });
     });
 

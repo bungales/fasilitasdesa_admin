@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -22,8 +23,10 @@ class UserController extends Controller
 
         // Jika search
         if ($search) {
-            $query->where('name', 'like', "%$search%")
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%$search%")
                   ->orWhere('email', 'like', "%$search%");
+            });
         }
 
         // Jika filter role
@@ -74,7 +77,6 @@ class UserController extends Controller
         return redirect()->route('user.index')->with('success', 'User berhasil ditambahkan!');
     }
 
-    // ✅ TAMBAHKAN METHOD SHOW INI
     public function show(User $user)
     {
         return view('pages.user.show', compact('user'));
@@ -101,7 +103,7 @@ class UserController extends Controller
             'role' => $request->role,
         ];
 
-        if ($request->password) {
+        if ($request->filled('password')) {
             $request->validate(['password' => 'confirmed|min:6']);
             $data['password'] = Hash::make($request->password);
         }
@@ -131,14 +133,49 @@ class UserController extends Controller
         return redirect()->route('user.index')->with('success', 'User berhasil diperbarui!');
     }
 
-    public function destroy(User $user)
+    public function destroy($id)
     {
-        // Hapus profile picture jika ada
-        if ($user->profile_picture && Storage::disk('public')->exists($user->profile_picture)) {
-            Storage::disk('public')->delete($user->profile_picture);
-        }
+        Log::info('=== DELETE USER START ===');
+        Log::info('User ID to delete: ' . $id);
 
-        $user->delete();
-        return redirect()->route('user.index')->with('success', 'User berhasil dihapus!');
+        try {
+            // Cari user berdasarkan ID
+            $user = User::find($id);
+
+            if (!$user) {
+                Log::error('User not found with ID: ' . $id);
+                return redirect()->route('user.index')
+                    ->with('error', 'User tidak ditemukan!');
+            }
+
+            Log::info('Found user: ' . $user->name . ' (' . $user->email . ')');
+
+            // Hapus profile picture jika ada
+            if ($user->profile_picture) {
+                Log::info('Profile picture path: ' . $user->profile_picture);
+                if (Storage::disk('public')->exists($user->profile_picture)) {
+                    Storage::disk('public')->delete($user->profile_picture);
+                    Log::info('Profile picture deleted successfully');
+                } else {
+                    Log::warning('Profile picture file not found');
+                }
+            }
+
+            // Delete user dari database
+            $user->delete();
+
+            Log::info('User deleted successfully from database');
+            Log::info('=== DELETE USER END ===');
+
+            return redirect()->route('user.index')
+                ->with('success', 'User ' . $user->name . ' berhasil dihapus!');
+
+        } catch (\Exception $e) {
+            Log::error('Error deleting user: ' . $e->getMessage());
+            Log::error($e->getTraceAsString());
+
+            return redirect()->route('user.index')
+                ->with('error', 'Gagal menghapus user: ' . $e->getMessage());
+        }
     }
 }

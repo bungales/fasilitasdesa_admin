@@ -79,6 +79,9 @@ Route::resource('pembayaran', PembayaranFasilitasController::class);
 Route::delete('/fasilitasumum/{fasilitasId}/media/{mediaId}', [FasilitasUmumController::class, 'deleteMedia'])
     ->name('fasilitasumum.deleteMedia');
 
+    Route::delete('/user/{id}', [UserController::class, 'destroy'])
+    ->name('user.destroy');
+
 // Route untuk Media pada Pembayaran Fasilitas
 Route::delete('/pembayaran/{bayarId}/media/{mediaId}', [PembayaranFasilitasController::class, 'deleteMedia'])
     ->name('pembayaran.deleteMedia');
