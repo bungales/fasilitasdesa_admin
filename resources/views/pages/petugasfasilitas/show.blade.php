@@ -54,7 +54,7 @@
                                         <i class="fas fa-id-badge me-2"></i>ID Petugas
                                     </h6>
                                     <p class="fw-bold fs-5 text-primary">
-                                        #{{ str_pad($petugasFasilitas->petugas_id, 5, '0', STR_PAD_LEFT) }}
+                                        #{{ str_pad($petugasFasilitas->getKey(), 5, '0', STR_PAD_LEFT) }}
                                     </p>
                                 </div>
 
@@ -219,12 +219,12 @@
                             </div>
 
                             <div class="btn-group" role="group">
-                                <a href="{{ route('petugas-fasilitas.edit', $petugasFasilitas->petugas_id) }}"
+                                <a href="{{ route('petugas-fasilitas.edit', $petugasFasilitas->getKey()) }}"
                                    class="btn btn-warning me-2">
                                     <i class="fas fa-edit me-1"></i> Edit
                                 </a>
 
-                                <form action="{{ route('petugas-fasilitas.destroy', $petugasFasilitas->petugas_id) }}"
+                                <form action="{{ route('petugas-fasilitas.destroy', $petugasFasilitas->getKey()) }}"
                                       method="POST"
                                       class="d-inline"
                                       onsubmit="return confirm('Apakah Anda yakin ingin menghapus petugas ini?');">
@@ -254,7 +254,7 @@
                                 <i class="fas fa-user-tie fa-2x text-white"></i>
                             </div>
                             <h5 class="mt-3 mb-0">Petugas Fasilitas</h5>
-                            <p class="text-muted">ID: #{{ str_pad($petugasFasilitas->petugas_id, 5, '0', STR_PAD_LEFT) }}</p>
+                            <p class="text-muted">ID: #{{ str_pad($petugasFasilitas->getKey(), 5, '0', STR_PAD_LEFT) }}</p>
                         </div>
 
                         <div class="list-group list-group-flush">
@@ -300,7 +300,7 @@
                     </div>
                     <div class="card-body">
                         <div class="d-grid gap-2">
-                            <a href="{{ route('petugas-fasilitas.edit', $petugasFasilitas->petugas_id) }}"
+                            <a href="{{ route('petugas-fasilitas.edit', $petugasFasilitas->getKey()) }}"
                                class="btn btn-warning">
                                 <i class="fas fa-edit me-2"></i> Edit Petugas
                             </a>
@@ -529,7 +529,7 @@
     function downloadQRCode() {
         const canvas = document.querySelector('#qrcode canvas');
         const link = document.createElement('a');
-        link.download = 'petugas-fasilitas-{{ $petugasFasilitas->petugas_id }}-qrcode.png';
+        link.download = 'petugas-fasilitas-{{ $petugasFasilitas->getKey() }}-qrcode.png';
         link.href = canvas.toDataURL('image/png');
         link.click();
     }
